@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Roadmap – Hệ Thống Đặt Lịch Y Tế · Đề Án</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --ink: #1a1a18;
+    --muted: #6b6b60;
+    --border: #e4e4dc;
+    --card: #ffffff;
+    --p1: #1d6fa4;
+    --p1bg: #eff6fc;
+    --p2: #2d8a4e;
+    --p2bg: #f0faf3;
+    --p3: #8b5cf6;
+    --p3bg: #f5f0ff;
+    --p4: #d97706;
+    --p4bg: #fffbeb;
+    --warn: #d97706;
+    --warnbg: #fffbeb;
+    --red: #dc2626;
+    --redbg: #fff5f5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+
+  .header-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Stack cards */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .stack-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+  }
+
+  .stack-card .layer {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .stack-card .tech {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .stack-card .reason {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  .section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  /* Phase cards */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 800px) {
+    .phases { grid-template-columns: 1fr; }
+  }
+
+  .phase {
+    border-radius: 10px;
+    border: 1.5px solid;
+    overflow: hidden;
+  }
+
+  .phase.p1 { border-color: #bdd8ed; }
+  .phase.p2 { border-color: #a8d8b8; }
+  .phase.p3 { border-color: #c4b0e8; }
+  .phase.p4 { border-color: #f0d090; }
+
+  .phase-header { padding: 1rem 1.25rem 0.75rem; }
+
+  .phase.p1 .phase-header { background: var(--p1bg); }
+  .phase.p2 .phase-header { background: var(--p2bg); }
+  .phase.p3 .phase-header { background: var(--p3bg); }
+  .phase.p4 .phase-header { background: var(--p4bg); }
+
+  .phase-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+
+  .phase.p1 .phase-label { color: var(--p1); }
+  .phase.p2 .phase-label { color: var(--p2); }
+  .phase.p3 .phase-label { color: var(--p3); }
+  .phase.p4 .phase-label { color: var(--p4); }
+
+  .phase-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.15rem;
+  }
+
+  .phase-time {
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .phase-body {
+    background: var(--card);
+    padding: 1rem 1.25rem;
+  }
+
+  .phase-body .db-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .phase-body .db-title:first-child { margin-top: 0; }
+
+  .table-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    background: #f4f4f0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 7px;
+    margin: 2px 2px 2px 0;
+    color: var(--ink);
+  }
+
+  .table-tag.core { background: #e8f2fb; border-color: #bdd8ed; color: var(--p1); }
+  .table-tag.feature { background: #e8f6ec; border-color: #a8d8b8; color: var(--p2); }
+  .table-tag.ai { background: #f5f0ff; border-color: #c4b0e8; color: var(--p3); }
+  .table-tag.polish { background: #fffbe8; border-color: #f0d060; color: #8a6800; }
+
+  .feature-list { list-style: none; margin-top: 0.75rem; }
+
+  .feature-list li {
+    font-size: 0.78rem;
+    padding: 0.25rem 0;
+    border-bottom: 1px dashed var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    color: var(--ink);
+  }
+
+  .feature-list li:last-child { border-bottom: none; }
+
+  .feature-list li .icon {
+    width: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .deliverable {
+    margin-top: 0.85rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 500;
+  }
+
+  .phase.p1 .deliverable { background: var(--p1bg); color: var(--p1); }
+  .phase.p2 .deliverable { background: var(--p2bg); color: var(--p2); }
+  .phase.p3 .deliverable { background: var(--p3bg); color: var(--p3); }
+  .phase.p4 .deliverable { background: var(--p4bg); color: var(--p4); }
+
+  /* Timeline */
+  .timeline {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: 110px repeat(10, 1fr);
+    gap: 2px;
+    margin-top: 1rem;
+    font-size: 0.65rem;
+  }
+
+  .tg-label { color: var(--muted); padding: 4px 0; font-weight: 500; }
+  .tg-week { text-align: center; color: var(--muted); padding: 4px 0; }
+
+  .tg-bar {
+    border-radius: 4px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: #fff;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .tg-empty { height: 22px; }
+
+  .bar-p1 { background: var(--p1); }
+  .bar-p2 { background: var(--p2); }
+  .bar-p3 { background: var(--p3); }
+  .bar-p4 { background: var(--p4); }
+  .bar-gray { background: #999; }
+
+  /* Milestone list */
+  .milestone-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .milestone-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .ms-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .ms-dot.d1 { background: var(--p1); }
+  .ms-dot.d2 { background: var(--p2); }
+  .ms-dot.d3 { background: var(--p3); }
+  .ms-dot.d4 { background: var(--p4); }
+
+  .ms-week {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.15rem;
+  }
+
+  .ms-dot.d1 ~ div .ms-week { color: var(--p1); }
+  .ms-dot.d2 ~ div .ms-week { color: var(--p2); }
+  .ms-dot.d3 ~ div .ms-week { color: var(--p3); }
+  .ms-dot.d4 ~ div .ms-week { color: var(--p4); }
+
+  .ms-title { font-size: 0.8rem; font-weight: 600; color: var(--ink); }
+  .ms-desc { font-size: 0.7rem; color: var(--muted); margin-top: 0.15rem; }
+
+  /* Warn / tip */
+  .warn-box {
+    background: var(--warnbg);
+    border: 1px solid #fcd34d;
+    border-left: 4px solid var(--warn);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    font-size: 0.78rem;
+  }
+
+  .warn-box strong { color: var(--warn); }
+
+  .tip-box {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-left: 4px solid var(--p2);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.78rem;
+  }
+
+  .tip-box strong { color: var(--p2); }
+
+  /* Steps */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .step-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+  }
+
+  .step-no {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.6rem;
+  }
+
+  .step-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.3rem; }
+
+  .step-body { font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78em;
+    background: #f0f0ec;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--p1);
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>🏥 Roadmap — Hệ Thống Đặt Lịch Y Tế · Đề Án</h1>
+  <div class="header-sub">Tech stack · 4 giai đoạn · Timeline 10 tuần · Milestone & bước đầu tiên</div>
+</div>
+
+<!-- TECH STACK -->
+<div class="section-title">🛠 Tech Stack Đề Xuất</div>
+<div class="stack-grid">
+  <div class="stack-card">
+    <div class="layer">Frontend + Backend</div>
+    <div class="tech">Next.js 14</div>
+    <div class="reason">App Router + API Routes + Server Components. Một repo duy nhất, dễ deploy.</div>
+  </div>
+  <div class="stack-card">
+    <div class="layer">Language</div>
+    <div class="tech">TypeScript</div>
+    <div class="reason">Bắt lỗi sớm, code rõ ràng hơn, hội đồng đánh giá cao.</div>
+  </div>
+  <div class="stack-card">
+    <div class="layer">UI / Styling</div>
+    <div class="tech">Tailwind + shadcn/ui</div>
+    <div class="reason">Nhanh, đẹp, responsive sẵn, không cần thiết kế từ đầu.</div>
+  </div>
+  <div class="stack-card">
+    <div class="layer">ORM</div>
+    <div class="tech">Prisma</div>
+    <div class="reason">Migration tự động từ schema, type-safe query, tài liệu tốt.</div>
+  </div>
+  <div class="stack-card">
+    <div class="layer">Database</div>
+    <div class="tech">PostgreSQL</div>
+    <div class="reason">Hỗ trợ JSONB, full-text search, pgvector cho RAG — dùng một DB duy nhất.</div>
+  </div>
+  <div class="stack-card">
+    <div class="layer">Auth</div>
+    <div class="tech">NextAuth.js v5</div>
+    <div class="reason">OAuth Google miễn phí, JWT session, không tự code auth.</div>
+  </div>
+  <div class="stack-card">
+    <div class="layer">AI Chatbot</div>
+    <div class="tech">OpenAI API / Gemini</div>
+    <div class="reason">Tool calling để truy vấn lịch rảnh DB. Free tier đủ cho đề án.</div>
+  </div>
+  <div class="stack-card">
+    <div class="layer">RAG / Vector</div>
+    <div class="tech">pgvector + LangChain</div>
+    <div class="reason">Dùng luôn PostgreSQL làm vector store — không cần DB riêng cho đề án.</div>
+  </div>
+  <div class="stack-card">
+    <div class="layer">Email</div>
+    <div class="tech">Resend</div>
+    <div class="reason">Free 3000 email/tháng, API đơn giản, tích hợp Next.js dễ.</div>
+  </div>
+  <div class="stack-card">
+    <div class="layer">Deploy DB</div>
+    <div class="tech">Supabase (free)</div>
+    <div class="reason">PostgreSQL hosted miễn phí, pgvector extension sẵn, dashboard trực quan.</div>
+  </div>
+  <div class="stack-card">
+    <div class="layer">Deploy App</div>
+    <div class="tech">Vercel (free)</div>
+    <div class="reason">Zero config với Next.js, HTTPS tự động, URL đẹp cho demo.</div>
+  </div>
+</div>
+
+<!-- PHASES -->
+<div class="section-title">📦 4 Giai Đoạn Phát Triển</div>
+<div class="phases">
+
+  <!-- PHASE 1 -->
+  <div class="phase p1">
+    <div class="phase-header">
+      <div class="phase-label">Giai đoạn 1</div>
+      <div class="phase-title">Nền tảng & Setup</div>
+      <div class="phase-time">⏱ Tuần 1–2 &nbsp;·&nbsp; BẮT BUỘC hoàn thành trước</div>
+    </div>
+    <div class="phase-body">
+      <div class="db-title">Bảng DB cần tạo</div>
+      <span class="table-tag core">users</span>
+      <span class="table-tag core">sessions</span>
+      <span class="table-tag core">doctors</span>
+      <span class="table-tag core">schedules</span>
+
+      <div class="db-title">Công việc</div>
+      <ul class="feature-list">
+        <li><span class="icon">📋</span> Phân tích yêu cầu, vẽ use case, ERD, kiến trúc</li>
+        <li><span class="icon">🚀</span> Khởi tạo Next.js 14 + TypeScript + Tailwind</li>
+        <li><span class="icon">🗄️</span> Setup PostgreSQL trên Supabase + Prisma migrate</li>
+        <li><span class="icon">🔐</span> Tích hợp NextAuth.js — đăng nhập Google</li>
+        <li><span class="icon">🌐</span> Deploy lên Vercel, CI cơ bản</li>
+      </ul>
+
+      <div class="deliverable">✅ Kết quả: repo chạy được, DB schema hoàn chỉnh, login hoạt động</div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase p2">
+    <div class="phase-header">
+      <div class="phase-label">Giai đoạn 2</div>
+      <div class="phase-title">Tính năng cốt lõi</div>
+      <div class="phase-time">⏱ Tuần 3–5 &nbsp;·&nbsp; Core feature bắt buộc</div>
+    </div>
+    <div class="phase-body">
+      <div class="db-title">Bảng DB cần thêm</div>
+      <span class="table-tag feature">appointments</span>
+      <span class="table-tag feature">notifications</span>
+
+      <div class="db-title">Công việc</div>
+      <ul class="feature-list">
+        <li><span class="icon">👤</span> Quản lý profile bệnh nhân & bác sĩ</li>
+        <li><span class="icon">🔍</span> Tìm kiếm bác sĩ theo chuyên khoa, rating</li>
+        <li><span class="icon">📅</span> Bác sĩ đăng ký lịch làm việc</li>
+        <li><span class="icon">📝</span> Bệnh nhân đặt / hủy / đổi lịch hẹn</li>
+        <li><span class="icon">✅</span> Bác sĩ xác nhận hoặc từ chối lịch hẹn</li>
+        <li><span class="icon">📧</span> Gửi email thông báo xác nhận (Resend)</li>
+      </ul>
+
+      <div class="deliverable">✅ Kết quả: luồng đặt lịch end-to-end hoạt động hoàn chỉnh</div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase p3">
+    <div class="phase-header">
+      <div class="phase-label">Giai đoạn 3</div>
+      <div class="phase-title">Tích hợp AI</div>
+      <div class="phase-time">⏱ Tuần 6–7 &nbsp;·&nbsp; Điểm nhấn của đề án</div>
+    </div>
+    <div class="phase-body">
+      <div class="db-title">Bảng DB cần thêm</div>
+      <span class="table-tag ai">chat_sessions</span>
+      <span class="table-tag ai">embeddings</span>
+
+      <div class="db-title">Công việc</div>
+      <ul class="feature-list">
+        <li><span class="icon">🤖</span> Tích hợp LLM API — chatbot giao tiếp tự nhiên</li>
+        <li><span class="icon">🔍</span> Tool calling: chatbot truy vấn DB kiểm tra lịch rảnh</li>
+        <li><span class="icon">💬</span> Giao diện chat widget nhúng vào trang</li>
+        <li><span class="icon">📚</span> Chuẩn bị tài liệu y tế, tạo embedding</li>
+        <li><span class="icon">🧠</span> RAG pipeline — truy xuất kiến thức y tế</li>
+        <li><span class="icon">🧪</span> Test độ chính xác chatbot với câu hỏi mẫu</li>
+      </ul>
+
+      <div class="deliverable">✅ Kết quả: AI chatbot trả lời lịch rảnh và tư vấn y tế cơ bản</div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase p4">
+    <div class="phase-header">
+      <div class="phase-label">Giai đoạn 4</div>
+      <div class="phase-title">Hoàn thiện & Báo cáo</div>
+      <div class="phase-time">⏱ Tuần 8–10 &nbsp;·&nbsp; Polish + nộp đề án</div>
+    </div>
+    <div class="phase-body">
+      <div class="db-title">Công việc</div>
+      <ul class="feature-list">
+        <li><span class="icon">📱</span> Responsive UI toàn bộ trang</li>
+        <li><span class="icon">🧪</span> Kiểm thử chức năng, fix bug</li>
+        <li><span class="icon">⚡</span> Tối ưu hiệu năng API, query DB</li>
+        <li><span class="icon">📄</span> Viết báo cáo đề án đầy đủ</li>
+        <li><span class="icon">🎞️</span> Chuẩn bị slide và kịch bản demo</li>
+        <li><span class="icon">🌐</span> Deploy production, kiểm tra URL demo</li>
+        <li><span class="icon">🎓</span> Rehearsal trình bày, bảo vệ đề án</li>
+      </ul>
+
+      <div class="deliverable">✅ Kết quả: nộp báo cáo + demo hoàn chỉnh, sẵn sàng bảo vệ</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TIMELINE -->
+<div class="section-title">📅 Timeline 10 Tuần</div>
+<div class="timeline">
+  <div style="font-size:.78rem;color:var(--muted);">Ước tính cho 1 người làm bán thời gian — mỗi tuần ~15–20 giờ.</div>
+  <div class="timeline-grid">
+    <!-- Header -->
+    <div class="tg-label"></div>
+    <div class="tg-week">T1</div><div class="tg-week">T2</div>
+    <div class="tg-week">T3</div><div class="tg-week">T4</div><div class="tg-week">T5</div>
+    <div class="tg-week">T6</div><div class="tg-week">T7</div>
+    <div class="tg-week">T8</div><div class="tg-week">T9</div><div class="tg-week">T10</div>
+
+    <!-- Phân tích & thiết kế -->
+    <div class="tg-label">Phân tích & setup</div>
+    <div class="tg-bar bar-p1" style="grid-column:span 2">Phân tích + Setup</div>
+    <div class="tg-empty" style="grid-column:span 8"></div>
+
+    <!-- Người dùng -->
+    <div class="tg-label">Người dùng & Auth</div>
+    <div class="tg-empty" style="grid-column:span 2"></div>
+    <div class="tg-bar bar-p2" style="grid-column:span 1">Auth + Profile</div>
+    <div class="tg-empty" style="grid-column:span 7"></div>
+
+    <!-- Đặt lịch -->
+    <div class="tg-label">Đặt lịch hẹn</div>
+    <div class="tg-empty" style="grid-column:span 3"></div>
+    <div class="tg-bar bar-p2" style="grid-column:span 2">Booking flow</div>
+    <div class="tg-empty" style="grid-column:span 5"></div>
+
+    <!-- AI Chatbot -->
+    <div class="tg-label">AI Chatbot</div>
+    <div class="tg-empty" style="grid-column:span 5"></div>
+    <div class="tg-bar bar-p3" style="grid-column:span 1">Chatbot</div>
+    <div class="tg-empty" style="grid-column:span 4"></div>
+
+    <!-- RAG -->
+    <div class="tg-label">RAG Pipeline</div>
+    <div class="tg-empty" style="grid-column:span 6"></div>
+    <div class="tg-bar bar-p3" style="grid-column:span 1">RAG</div>
+    <div class="tg-empty" style="grid-column:span 3"></div>
+
+    <!-- UI + Test -->
+    <div class="tg-label">UI & Kiểm thử</div>
+    <div class="tg-empty" style="grid-column:span 7"></div>
+    <div class="tg-bar bar-p4" style="grid-column:span 1">UI + Test</div>
+    <div class="tg-empty" style="grid-column:span 2"></div>
+
+    <!-- Báo cáo -->
+    <div class="tg-label">Báo cáo & Demo</div>
+    <div class="tg-empty" style="grid-column:span 8"></div>
+    <div class="tg-bar bar-p4" style="grid-column:span 2">Báo cáo + Bảo vệ</div>
+
+  </div>
+</div>
+
+<!-- MILESTONES -->
+<div class="section-title">🏁 Milestone Kiểm Soát Tiến Độ</div>
+<div class="milestone-list">
+  <div class="milestone-card">
+    <div class="ms-dot d1"></div>
+    <div>
+      <div class="ms-week">Cuối tuần 2</div>
+      <div class="ms-title">Nền tảng sẵn sàng</div>
+      <div class="ms-desc">Repo chạy được, DB schema migrate thành công, đăng nhập Google hoạt động, đã deploy Vercel.</div>
+    </div>
+  </div>
+  <div class="milestone-card">
+    <div class="ms-dot d2"></div>
+    <div>
+      <div class="ms-week">Cuối tuần 5</div>
+      <div class="ms-title">Luồng đặt lịch hoàn chỉnh</div>
+      <div class="ms-desc">Bệnh nhân đặt lịch, bác sĩ xác nhận, hệ thống gửi email thông báo — end-to-end hoạt động.</div>
+    </div>
+  </div>
+  <div class="milestone-card">
+    <div class="ms-dot d3"></div>
+    <div>
+      <div class="ms-week">Cuối tuần 7</div>
+      <div class="ms-title">AI chatbot chạy được</div>
+      <div class="ms-desc">Chatbot kiểm tra lịch bác sĩ rảnh qua tool calling, RAG trả lời câu hỏi y tế cơ bản.</div>
+    </div>
+  </div>
+  <div class="milestone-card">
+    <div class="ms-dot d4"></div>
+    <div>
+      <div class="ms-week">Cuối tuần 10</div>
+      <div class="ms-title">Nộp & bảo vệ đề án</div>
+      <div class="ms-desc">Báo cáo hoàn chỉnh, slide demo sẵn sàng, production deploy ổn định, bảo vệ thành công.</div>
+    </div>
+  </div>
+</div>
+
+<!-- WARNINGS -->
+<div class="warn-box">
+  ⚠️ <strong>Đừng để phần AI đến tuần 8 mới làm.</strong> AI chatbot là điểm nhấn của đề án nhưng cũng dễ bị tắc nhất — tích hợp LLM API, xử lý tool calling, debug RAG đều tốn thời gian hơn dự kiến. Bắt đầu từ tuần 6 để còn thời gian sửa nếu có vấn đề.
+</div>
+
+<div class="warn-box">
+  ⚠️ <strong>Không cần RAG phức tạp.</strong> Với mức độ đề án, chỉ cần 10–20 tài liệu y tế nhỏ, embed bằng <code>pgvector</code>, truy xuất top-3 chunk gần nhất là đủ để demo ấn tượng. Không cần hybrid search hay reranker.
+</div>
+
+<div class="tip-box">
+  💡 <strong>Mẹo cho hội đồng:</strong> Hội đồng thường ấn tượng với <strong>tính năng AI chatbot kiểm tra lịch rảnh</strong> hơn là UI đẹp. Demo kịch bản: người dùng hỏi bằng tiếng tự nhiên "Bác sĩ Nguyễn còn lịch thứ 4 tuần này không?" và chatbot trả lời chính xác — đây là phần phân biệt đề án của bạn với những đề án CRUD thông thường.
+</div>
+
+<!-- FIRST STEPS -->
+<div class="section-title">🚀 5 Bước Đầu Tiên Cần Làm Ngay</div>
+<div class="steps">
+  <div class="step-card">
+    <div class="step-no">1</div>
+    <div class="step-title">Khởi tạo project</div>
+    <div class="step-body">
+      <code>npx create-next-app@latest</code><br>
+      Chọn TypeScript + Tailwind + App Router.<br>
+      Cài thêm: <code>prisma</code>, <code>shadcn/ui</code>, <code>next-auth</code>
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-no">2</div>
+    <div class="step-title">Setup PostgreSQL + Prisma</div>
+    <div class="step-body">
+      Tạo DB trên Supabase (miễn phí).<br>
+      Enable extension <code>pgvector</code>.<br>
+      Viết <code>schema.prisma</code> — 6 bảng cốt lõi trước.<br>
+      Chạy <code>npx prisma migrate dev</code>
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-no">3</div>
+    <div class="step-title">Setup Auth</div>
+    <div class="step-body">
+      Cài <code>next-auth@beta</code> + Google Provider.<br>
+      Kết nối với bảng <code>users</code> + <code>sessions</code>.<br>
+      Test login/logout hoạt động trên Vercel.
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-no">4</div>
+    <div class="step-title">Dựng trang đặt lịch</div>
+    <div class="step-body">
+      Trang tìm bác sĩ có filter chuyên khoa.<br>
+      API: GET lịch rảnh + POST tạo appointment.<br>
+      Gửi email xác nhận với Resend.
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-no">5</div>
+    <div class="step-title">Tích hợp AI chatbot</div>
+    <div class="step-body">
+      <code>npm install openai langchain</code><br>
+      Định nghĩa tool <code>check_doctor_schedule</code>.<br>
+      Stream response về giao diện chat widget.
+    </div>
+  </div>
+</div>
+
+<div style="font-size:.72rem;color:var(--muted);padding-top:1rem;border-top:1px solid var(--border);">
+  Cần hỗ trợ thêm? Có thể xuất ra: <strong>Prisma schema đầy đủ</strong> · <strong>API routes mẫu</strong> · <strong>Cấu trúc thư mục project</strong> · <strong>Prompt system cho AI chatbot</strong> · <strong>RAG pipeline code mẫu</strong>
+</div>
+
+</body>
+</html>

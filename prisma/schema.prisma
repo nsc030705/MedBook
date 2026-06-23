@@ -1,0 +1,201 @@
+// Prisma Schema — Hệ Thống Đặt Lịch Y Tế
+// Tech: PostgreSQL (Supabase) + pgvector cho RAG
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ==================== AUTH ====================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // bcrypt hash — null for OAuth/demo users
+  role          Role      @default(PATIENT)
+  isActive      Boolean   @default(true)  // admin có thể khóa tài khoản
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  accounts      Account[]
+  sessions      Session[]
+  doctor        Doctor?
+  appointments  Appointment[] @relation("PatientAppointments")
+  chatSessions  ChatSession[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ==================== CORE DOMAIN ====================
+
+enum Role {
+  PATIENT
+  DOCTOR
+  ADMIN
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model Doctor {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  specialty   String
+  bio         String?
+  hospital    String?
+  experience  Int      @default(0) // years
+  rating      Float    @default(4.5)
+  reviewCount Int      @default(0)
+  fee         Int      @default(200000) // VND
+  avatarUrl   String?
+  isVerified  Boolean  @default(false) // admin phải phê duyệt
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schedules    Schedule[]
+  appointments Appointment[]
+
+  @@map("doctors")
+}
+
+model Schedule {
+  id          String    @id @default(cuid())
+  doctorId    String
+  dayOfWeek   DayOfWeek
+  startTime   String    // "08:00"
+  endTime     String    // "09:00"
+  isAvailable Boolean   @default(true)
+  maxSlots    Int       @default(1)
+  createdAt   DateTime  @default(now())
+
+  // Relations
+  doctor       Doctor        @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  appointments Appointment[]
+
+  @@map("schedules")
+}
+
+model Appointment {
+  id          String            @id @default(cuid())
+  patientId   String
+  doctorId    String
+  scheduleId  String?
+  date        DateTime
+  status      AppointmentStatus @default(PENDING)
+  reason      String?
+  notes       String?
+  meetingLink String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  // Relations
+  patient  User      @relation("PatientAppointments", fields: [patientId], references: [id], onDelete: Cascade)
+  doctor   Doctor    @relation(fields: [doctorId], references: [id])
+  schedule Schedule? @relation(fields: [scheduleId], references: [id])
+
+  @@map("appointments")
+}
+
+// ==================== AI / CHAT ====================
+
+model ChatSession {
+  id        String        @id @default(cuid())
+  userId    String
+  title     String        @default("Cuộc trò chuyện mới")
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages ChatMessage[]
+
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id        String      @id @default(cuid())
+  sessionId String
+  role      String      // "user" | "assistant"
+  content   String
+  createdAt DateTime    @default(now())
+
+  session ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
+
+// Bảng embeddings cho RAG — cần extension pgvector
+// Nếu không có pgvector, dùng JSON để store embeddings (demo mode)
+model MedicalDoc {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  category  String   // "symptom" | "treatment" | "specialty" | "general"
+  source    String?
+  createdAt DateTime @default(now())
+
+  @@map("medical_docs")
+}
