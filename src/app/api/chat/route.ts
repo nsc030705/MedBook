@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { chatWithAI } from "@/lib/ai/gemini";
+import { chatWithAI } from "@/lib/ai/bot";
 import { prisma } from "@/lib/prisma";
 
 // POST /api/chat — AI Chatbot endpoint, lưu lịch sử vào DB

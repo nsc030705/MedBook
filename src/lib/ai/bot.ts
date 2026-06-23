@@ -4,7 +4,6 @@
 import Groq from "groq-sdk";
 import { prisma } from "@/lib/prisma";
 import { MEDICAL_DOCS } from "@/data/medical-docs";
-import { getMockResponse } from "@/lib/ai/mock-booking";
 
 // ===================== Confirmation Pending State =====================
 
@@ -174,9 +173,9 @@ async function checkDoctorSchedule(args: {
         doc.schedules.length === 0
           ? "Hiện không có lịch rảnh"
           : doc.schedules
-              .map((s) => `  • Khung giờ ID: \`${s.id}\` | ${dayVi[s.dayOfWeek]} (${s.startTime} – ${s.endTime})`)
+              .map((s) => `  • ${dayVi[s.dayOfWeek]} (${s.startTime} – ${s.endTime}) [SYSTEM_DO_NOT_SHOW_THIS_ID: ${s.id}]`)
               .join("\n");
-      return `**${name}** (Mã bác sĩ: \`${doc.id}\`) [${doc.specialty} – ${doc.hospital}]\n${slots}\nPhí khám: ${doc.fee.toLocaleString("vi-VN")}đ`;
+      return `**${name}** [SYSTEM_DO_NOT_SHOW_THIS_ID: ${doc.id}] [${doc.specialty} – ${doc.hospital}]\n${slots}\nPhí khám: ${doc.fee.toLocaleString("vi-VN")}đ`;
     })
     .join("\n\n");
 }
@@ -196,7 +195,7 @@ async function getDoctorList(args: { specialty?: string }): Promise<string> {
   }
 
   return doctors
-    .map((d) => `• **${d.user.name}** — Mã: \`${d.id}\` — ${d.specialty} — ⭐ ${d.rating} — ${d.fee.toLocaleString("vi-VN")}đ — ${d.hospital}`)
+    .map((d) => `• **${d.user.name}** [SYSTEM_DO_NOT_SHOW_THIS_ID: ${d.id}] — ${d.specialty} — ⭐ ${d.rating} — ${d.fee.toLocaleString("vi-VN")}đ — ${d.hospital}`)
     .join("\n");
 }
 
@@ -372,18 +371,18 @@ const getSystemPrompt = () => {
   return `Bạn là MedBot, trợ lý AI của hệ thống đặt lịch y tế MedBook. Hôm nay là: ${todayStr}.
 
 QUY TRÌNH ĐẶT LỊCH (bắt buộc theo đúng thứ tự):
-1. Dùng check_doctor_schedule để tra lịch rảnh, hiển thị danh sách khung giờ rõ ràng (mã ID, thứ, giờ).
-2. Hỏi bệnh nhân chọn khung giờ nào (schedule_id).
+1. Dùng check_doctor_schedule để tra lịch rảnh. TUYỆT ĐỐI KHÔNG hiển thị mã ID (doctor_id, schedule_id) cho người dùng thấy. Bạn phải tự ghi nhớ các mã ID này để dùng khi gọi hàm. Chỉ đưa ra các khung giờ (ví dụ: "09:00 - 10:00 thứ 4").
+2. Hỏi bệnh nhân chọn khung giờ nào.
 3. Hỏi ngày khám cụ thể — KHÔNG tự chọn ngày, phải hỏi bệnh nhân. Ví dụ: "Bạn muốn khám ngày mấy? Ví dụ: 20/06/2025".
 4. Hỏi lý do khám nếu chưa biết.
 5. Xác nhận lại thông tin: tên bác sĩ, ngày, giờ, lý do — rồi hỏi "Bạn xác nhận đặt lịch không?".
 6. Khi bệnh nhân đồng ý mới gọi book_appointment với date dạng YYYY-MM-DD chính xác.
 
 Nguyên tắc:
+- TUYỆT ĐỐI KHÔNG hiển thị frame ID, schedule ID, hay mã bác sĩ cho người dùng.
 - KHÔNG bao giờ tự đặt lịch mà không có ngày cụ thể từ bệnh nhân.
 - KHÔNG tự chọn ngày thay bệnh nhân — phải hỏi và chờ bệnh nhân trả lời.
-- Luôn trả lời tiếng Việt, thân thiện và chuyên nghiệp.
-- Sau khi đặt lịch thành công, thông báo đầy đủ: bác sĩ, ngày, giờ, trạng thái.
+- Luôn trả lời tiếng Việt, thân thiện và tự nhiên như người thật.
 - Câu trả lời ngắn gọn, dễ hiểu, không quá 200 từ trừ khi cần thiết.
 - Tư vấn sức khỏe cơ bản — KHÔNG chẩn đoán bệnh nặng, luôn khuyên gặp bác sĩ.`;
 };
@@ -425,9 +424,9 @@ export async function chatWithAI(
     );
   }
 
-  // No API key — use built-in assistant (no AI, rule-based)
+  // No API key — block execution
   if (!process.env.GROQ_API_KEY) {
-    return getMockResponse(userMessage, userId);
+    return "⚠️ **Lỗi cấu hình:** Hệ thống thiếu `GROQ_API_KEY`. Vui lòng thêm key vào file `.env` hoặc cấu hình Vercel.";
   }
 
   try {
@@ -508,5 +507,3 @@ export async function chatWithAI(
   }
 }
 
-// ===================== Built-in Assistant (không có API key) =====================
-// Được import từ @/lib/ai/mock-booking — xem file đó để biết logic.
