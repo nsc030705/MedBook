@@ -1,7 +1,7 @@
-// AI Chatbot — OpenAI integration với Function Calling + Simple RAG
-// Thay thế Gemini bằng OpenAI GPT-4o-mini
+// AI Chatbot — Groq integration với Function Calling + Simple RAG
+// Sử dụng mô hình Llama 3 qua Groq API miễn phí
 
-import OpenAI from "openai";
+import Groq from "groq-sdk";
 import { prisma } from "@/lib/prisma";
 import { MEDICAL_DOCS } from "@/data/medical-docs";
 import { getMockResponse } from "@/lib/ai/mock-booking";
@@ -66,12 +66,12 @@ function isCancellation(msg: string): boolean {
 }
 
 // Lazy initialization — tránh lỗi khi build nếu chưa có API key
-let _openai: OpenAI | null = null;
-function getOpenAI(): OpenAI {
-  if (!_openai) {
-    _openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || "placeholder" });
+let _groq: Groq | null = null;
+function getGroq(): Groq {
+  if (!_groq) {
+    _groq = new Groq({ apiKey: process.env.GROQ_API_KEY || "placeholder" });
   }
-  return _openai;
+  return _groq;
 }
 
 // ===================== RAG — Simple keyword-based retrieval =====================
@@ -315,7 +315,7 @@ async function executePendingBooking(userId: string): Promise<string> {
 
 // ===================== OpenAI Tool Definitions =====================
 
-const TOOLS_OPENAI: OpenAI.Chat.Completions.ChatCompletionTool[] = [
+const TOOLS_OPENAI: Groq.Chat.Completions.ChatCompletionTool[] = [
   {
     type: "function",
     function: {
@@ -426,15 +426,15 @@ export async function chatWithAI(
   }
 
   // No API key — use built-in assistant (no AI, rule-based)
-  if (!process.env.OPENAI_API_KEY) {
+  if (!process.env.GROQ_API_KEY) {
     return getMockResponse(userMessage, userId);
   }
 
   try {
     const ragContext = retrieveRelevantDocs(userMessage);
 
-    // Build OpenAI message array
-    const history: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+    // Build Groq message array (tương thích hoàn toàn API OpenAI)
+    const history: Groq.Chat.Completions.ChatCompletionMessageParam[] = [
       { role: "system", content: getSystemPrompt() },
       ...messages.slice(-10).map((m) => ({
         role: m.role as "user" | "assistant",
@@ -443,10 +443,10 @@ export async function chatWithAI(
       { role: "user", content: userMessage + ragContext },
     ];
 
-    let response = await getOpenAI().chat.completions.create({
-      model: "gpt-4o-mini",
+    let response = await getGroq().chat.completions.create({
+      model: "llama-3.3-70b-versatile",
       messages: history,
-      tools: TOOLS_OPENAI,
+      tools: TOOLS_OPENAI as any, // Ép kiểu vì Groq type slightly differs but runtime is same
       tool_choice: "auto",
       max_tokens: 1000,
     });
@@ -459,7 +459,7 @@ export async function chatWithAI(
 
     while (message.tool_calls && message.tool_calls.length > 0 && iterations < MAX_ITERATIONS) {
       // Add assistant message with tool calls
-      history.push(message as OpenAI.Chat.Completions.ChatCompletionMessageParam);
+      history.push(message as Groq.Chat.Completions.ChatCompletionMessageParam);
 
       // Execute all tool calls in parallel
       const toolResults = await Promise.all(
@@ -478,10 +478,10 @@ export async function chatWithAI(
       history.push(...toolResults);
 
       // Continue the conversation
-      response = await getOpenAI().chat.completions.create({
-        model: "gpt-4o-mini",
+      response = await getGroq().chat.completions.create({
+        model: "llama-3.3-70b-versatile",
         messages: history,
-        tools: TOOLS_OPENAI,
+        tools: TOOLS_OPENAI as any,
         tool_choice: "auto",
         max_tokens: 1000,
       });
@@ -492,17 +492,17 @@ export async function chatWithAI(
 
     return message.content || "Xin lỗi, tôi không thể xử lý yêu cầu này.";
   } catch (error: any) {
-    console.error("OpenAI API error:", error?.message);
+    console.error("Groq API error:", error?.message);
     // Phân tích lỗi để trả về thông báo rõ ràng hơn
     const msg = error?.message || "";
     if (msg.includes("401") || msg.includes("Incorrect API key") || msg.includes("invalid_api_key")) {
-      return "⚠️ **API key không hợp lệ.** Vui lòng kiểm tra lại `OPENAI_API_KEY` trong file `.env`.";
+      return "⚠️ **API key không hợp lệ.** Vui lòng kiểm tra lại `GROQ_API_KEY` trong file `.env`.";
     }
     if (msg.includes("429") || msg.includes("rate limit") || msg.includes("quota")) {
       return "⏳ **Quá giới hạn request.** Vui lòng chờ vài giây rồi thử lại.";
     }
     if (msg.includes("timeout") || msg.includes("ECONNRESET") || msg.includes("ENOTFOUND")) {
-      return "🌐 **Không thể kết nối OpenAI.** Kiểm tra kết nối mạng và thử lại.";
+      return "🌐 **Không thể kết nối máy chủ AI.** Kiểm tra kết nối mạng và thử lại.";
     }
     return "⚠️ **MedBot gặp lỗi.** Vui lòng thử lại sau vài giây.";
   }
