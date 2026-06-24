@@ -188,7 +188,6 @@ export function ChatWidget() {
             <div style={{ fontWeight: 700, fontSize: "0.88rem", color: "var(--text)" }}>
               MedBot AI
             </div>
-            </div>
           </div>
           <Link
             href="/chat"
