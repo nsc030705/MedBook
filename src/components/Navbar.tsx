@@ -148,7 +148,6 @@ export function Navbar() {
                 "var(--text-muted)";
             }}
           >
-            VI
             <span
               style={{
                 color: locale === "vi" ? "var(--primary)" : "var(--text-muted)",
