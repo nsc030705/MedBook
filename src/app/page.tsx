@@ -537,25 +537,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== FOOTER ===== */}
-      <footer
-        style={{
-          borderTop: "1px solid var(--border)",
-          padding: "2rem 1.5rem",
-          textAlign: "center",
-          color: "var(--text-dim)",
-          fontSize: "0.8rem",
-        }}
-      >
-        <div className="container">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
-            <div style={{ fontWeight: 700, color: "var(--text-muted)" }}>
-              {h.footerBrand}
-            </div>
-            <div>{h.footerPowered}</div>
-          </div>
-        </div>
-      </footer>
+
     </div>
   );
 }
