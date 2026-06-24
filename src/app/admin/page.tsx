@@ -77,7 +77,7 @@ export default function AdminPage() {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2rem", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <h1 style={{ fontSize: "1.75rem", fontWeight: 800, letterSpacing: "-0.03em", color: "var(--text)", margin: 0, marginBottom: "0.25rem" }}>
-              🛡️ Admin Dashboard
+              Admin Dashboard
             </h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", margin: 0 }}>
               Quản trị hệ thống MedBook
@@ -85,13 +85,13 @@ export default function AdminPage() {
           </div>
           <div style={{ display: "flex", gap: "0.75rem" }}>
             <Link href="/admin/appointments" className="btn-ghost" style={{ padding: "0.45rem 1rem", fontSize: "0.85rem" }}>
-              📋 Lịch hẹn
+              Lịch hẹn
             </Link>
             <Link href="/admin/doctors" className="btn-ghost" style={{ padding: "0.45rem 1rem", fontSize: "0.85rem" }}>
-              🩺 Bác sĩ
+              Bác sĩ
             </Link>
             <Link href="/admin/users" className="btn-ghost" style={{ padding: "0.45rem 1rem", fontSize: "0.85rem" }}>
-              👥 Người dùng
+              Người dùng
             </Link>
           </div>
         </div>
@@ -99,12 +99,12 @@ export default function AdminPage() {
         {/* Overview stats */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
           {[
-            { label: "Người dùng", value: ov.totalUsers, icon: "👥", color: "#0ea5e9" },
-            { label: "Bác sĩ xác minh", value: ov.totalDoctors, icon: "🩺", color: "#6366f1" },
-            { label: "Tổng lịch hẹn", value: ov.totalAppointments, icon: "📋", color: "#8b5cf6" },
-            { label: "Đang chờ", value: ov.pendingAppointments, icon: "⏳", color: "#fbbf24" },
-            { label: "Đã xác nhận", value: ov.confirmedAppointments, icon: "✅", color: "#34d399" },
-            { label: "Đã hủy", value: ov.cancelledAppointments, icon: "❌", color: "#f87171" },
+            { label: "Người dùng", value: ov.totalUsers, icon: "", color: "#0ea5e9" },
+            { label: "Bác sĩ xác minh", value: ov.totalDoctors, icon: "", color: "#6366f1" },
+            { label: "Tổng lịch hẹn", value: ov.totalAppointments, icon: "", color: "#8b5cf6" },
+            { label: "Đang chờ", value: ov.pendingAppointments, icon: "", color: "#fbbf24" },
+            { label: "Đã xác nhận", value: ov.confirmedAppointments, icon: "", color: "#34d399" },
+            { label: "Đã hủy", value: ov.cancelledAppointments, icon: "", color: "#f87171" },
           ].map((stat) => (
             <div key={stat.label} className="glass" style={{ padding: "1.25rem" }}>
               <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>{stat.icon}</div>
@@ -121,7 +121,7 @@ export default function AdminPage() {
           <div className="glass" style={{ padding: "1.5rem" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
               <h2 style={{ fontWeight: 700, color: "var(--text)", fontSize: "1rem", margin: 0 }}>
-                📊 Lịch hẹn theo thời gian
+                Lịch hẹn theo thời gian
               </h2>
               <div style={{ display: "flex", gap: "0.4rem" }}>
                 {(["week", "month", "year"] as const).map((p) => (
@@ -189,7 +189,7 @@ export default function AdminPage() {
           {/* Top Doctors */}
           <div className="glass" style={{ padding: "1.5rem" }}>
             <h2 style={{ fontWeight: 700, color: "var(--text)", fontSize: "1rem", marginBottom: "1rem" }}>
-              🏆 Top Bác Sĩ
+              Top Bác Sĩ
             </h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {stats.topDoctors.map((doc, i) => (
@@ -226,7 +226,7 @@ export default function AdminPage() {
         <div className="glass" style={{ padding: "1.5rem" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
             <h2 style={{ fontWeight: 700, color: "var(--text)", fontSize: "1rem", margin: 0 }}>
-              🕐 Lịch hẹn gần đây
+              Lịch hẹn gần đây
             </h2>
             <Link href="/admin/appointments" style={{ fontSize: "0.78rem", color: "var(--primary)", textDecoration: "none", fontWeight: 600 }}>
               Xem tất cả →

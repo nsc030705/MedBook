@@ -79,7 +79,7 @@ export default function AdminUsersPage() {
               ← Admin
             </Link>
             <h1 style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--text)", margin: "0.25rem 0 0" }}>
-              👥 Quản lý Người Dùng
+              Quản lý Người Dùng
             </h1>
           </div>
           <span style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
@@ -91,7 +91,7 @@ export default function AdminUsersPage() {
         <div className="glass" style={{ padding: "1rem 1.25rem", marginBottom: "1.25rem", display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
           <input
             className="input"
-            placeholder="🔍 Tìm tên hoặc email..."
+            placeholder="Tìm tên hoặc email..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             style={{ flex: 1, minWidth: 200 }}
@@ -119,7 +119,7 @@ export default function AdminUsersPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
               {users.length === 0 ? (
                 <div style={{ textAlign: "center", padding: "4rem", color: "var(--text-muted)" }}>
-                  <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🔍</div>
+                  <div style={{ fontSize: "3rem", marginBottom: "1rem" }}></div>
                   <p>Không tìm thấy người dùng nào</p>
                 </div>
               ) : users.map((user) => {
@@ -167,7 +167,7 @@ export default function AdminUsersPage() {
                               padding: "2px 8px", borderRadius: 20,
                               fontSize: "0.68rem", fontWeight: 700,
                             }}>
-                              🔒 Đã khóa
+                              Đã khóa
                             </span>
                           )}
                         </div>
@@ -195,7 +195,7 @@ export default function AdminUsersPage() {
                         >
                           {updating === user.id
                             ? <div className="spinner" style={{ width: 14, height: 14 }} />
-                            : user.isActive ? "🔒 Khóa" : "🔓 Mở khóa"
+                            : user.isActive ? "Khóa" : "Mở khóa"
                           }
                         </button>
                       </div>

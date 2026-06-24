@@ -207,8 +207,8 @@ export default function DoctorProfilePage() {
               </h1>
               <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", margin: 0 }}>
                 {profile?.isVerified
-                  ? <span style={{ color: "var(--accent)" }}>✅ Đã xác minh — hiển thị cho bệnh nhân</span>
-                  : <span style={{ color: "#fbbf24" }}>⏳ Chờ admin phê duyệt</span>
+                  ? <span style={{ color: "var(--accent)" }}>Đã xác minh — hiển thị cho bệnh nhân</span>
+                  : <span style={{ color: "#fbbf24" }}>Chờ admin phê duyệt</span>
                 }
               </p>
             </div>
@@ -218,10 +218,10 @@ export default function DoctorProfilePage() {
         {/* Tabs */}
         <div style={{ display: "flex", gap: "0.25rem", marginBottom: "1.5rem", borderBottom: "1px solid var(--border)" }}>
           <button style={tabStyle("profile")} onClick={() => setActiveTab("profile")}>
-            👤 Thông tin hồ sơ
+            Thông tin hồ sơ
           </button>
           <button style={tabStyle("schedules")} onClick={() => setActiveTab("schedules")}>
-            📅 Lịch làm việc
+            Lịch làm việc
           </button>
         </div>
 
@@ -241,7 +241,7 @@ export default function DoctorProfilePage() {
             borderRadius: 8, padding: "0.75rem 1rem", marginBottom: "1rem",
             color: "#34d399", fontSize: "0.85rem",
           }}>
-            ✅ Đã lưu thay đổi thành công!
+            Đã lưu thay đổi thành công!
           </div>
         )}
 
@@ -313,7 +313,7 @@ export default function DoctorProfilePage() {
                     Đánh giá hiện tại
                   </label>
                   <div className="input" style={{ background: "rgba(255,255,255,0.02)", cursor: "not-allowed", color: "var(--text-muted)" }}>
-                    ⭐ {profile?.rating?.toFixed(1) || "—"} ({profile?.reviewCount || 0} đánh giá)
+                    {profile?.rating?.toFixed(1) || "—"} sao ({profile?.reviewCount || 0} đánh giá)
                   </div>
                 </div>
               </div>
@@ -337,7 +337,7 @@ export default function DoctorProfilePage() {
                 className="btn-primary"
                 style={{ padding: "0.75rem 2rem", opacity: saving ? 0.7 : 1 }}
               >
-                {saving ? <><div className="spinner" />Đang lưu...</> : "💾 Lưu hồ sơ"}
+                {saving ? <><div className="spinner" />Đang lưu...</> : "Lưu hồ sơ"}
               </button>
             </form>
           </div>
@@ -349,7 +349,7 @@ export default function DoctorProfilePage() {
             {/* Add new schedule */}
             <div className="glass" style={{ padding: "1.5rem" }}>
               <h3 style={{ fontWeight: 700, color: "var(--text)", marginBottom: "1rem", fontSize: "0.95rem" }}>
-                ➕ Thêm khung giờ làm việc
+                Thêm khung giờ làm việc
               </h3>
               <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "flex-end" }}>
                 <div>
@@ -407,11 +407,11 @@ export default function DoctorProfilePage() {
             {/* Current schedules */}
             <div className="glass" style={{ padding: "1.5rem" }}>
               <h3 style={{ fontWeight: 700, color: "var(--text)", marginBottom: "1.25rem", fontSize: "0.95rem" }}>
-                📅 Lịch làm việc hiện tại
+                Lịch làm việc hiện tại
               </h3>
               {Object.keys(groupedSchedules).length === 0 ? (
                 <div style={{ textAlign: "center", padding: "2rem", color: "var(--text-muted)" }}>
-                  <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>📭</div>
+                  <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}></div>
                   <p>Chưa có lịch làm việc. Thêm khung giờ để bệnh nhân có thể đặt lịch.</p>
                 </div>
               ) : (

@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    // Google OAuth
+    // Đăng nhập qua Google (OAuth)
     ...(process.env.AUTH_GOOGLE_ID
       ? [
           Google({
@@ -18,7 +18,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         ]
       : []),
 
-    // Credentials provider
+    // Đăng nhập bằng Email và Mật khẩu (Credentials)
     Credentials({
       name: "Credentials",
       credentials: {
@@ -70,7 +70,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
 
-  // JWT strategy: sessions stored in cookie, adapter handles OAuth user/account creation
+  // Chiến lược JWT: Session được lưu trong cookie, Adapter tự động xử lý việc tạo User/Account khi dùng OAuth
   session: { strategy: "jwt" },
 
   callbacks: {

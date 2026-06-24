@@ -76,7 +76,7 @@ export function ChatWidget() {
       if (!res.ok) {
         // 401 = session expired / user not found in DB
         const errMsg = res.status === 401
-          ? "🔐 Phiên đăng nhập đã hết hạn. Vui lòng **đăng xuất và đăng nhập lại** để tiếp tục sử dụng chatbot."
+          ? "Phiên đăng nhập đã hết hạn. Vui lòng **đăng xuất và đăng nhập lại** để tiếp tục sử dụng chatbot."
           : (data.error || c.errorGeneral);
         setMessages((prev) => [...prev, { role: "assistant", content: errMsg }]);
       } else {
@@ -129,7 +129,7 @@ export function ChatWidget() {
           animation: open ? "none" : "pulse-glow 2.5s infinite",
         }}
       >
-        {open ? "✕" : "🤖"}
+        {open ? "✕" : "AI"}
       </button>
 
       {/* Widget panel */}
@@ -182,15 +182,12 @@ export function ChatWidget() {
               animation: "pulse-glow 2s infinite",
             }}
           >
-            🤖
+            AI
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 700, fontSize: "0.88rem", color: "var(--text)" }}>
               MedBot AI
             </div>
-            <div style={{ fontSize: "0.68rem", color: "var(--accent)" }}>
-              <span style={{ display: "inline-block", width: 5, height: 5, borderRadius: "50%", background: "var(--accent)", marginRight: 4, verticalAlign: "middle" }} />
-              {c.active}
             </div>
           </div>
           <Link
@@ -213,7 +210,7 @@ export function ChatWidget() {
         {/* Not logged in */}
         {!session ? (
           <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem", textAlign: "center" }}>
-            <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🔐</div>
+            <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}></div>
             <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: "1rem", lineHeight: 1.6 }}>
               Đăng nhập để chat với MedBot AI
             </p>
@@ -253,7 +250,7 @@ export function ChatWidget() {
                         fontSize: "0.75rem", flexShrink: 0, marginTop: 2,
                       }}
                     >
-                      🤖
+                      AI
                     </div>
                   )}
                   <div
@@ -282,7 +279,7 @@ export function ChatWidget() {
                     display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: "0.75rem", flexShrink: 0,
                   }}>
-                    🤖
+                    AI
                   </div>
                   <div style={{
                     padding: "0.55rem 0.85rem",

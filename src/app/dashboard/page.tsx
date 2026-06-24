@@ -101,7 +101,7 @@ export default function DashboardPage() {
                 marginBottom: "0.25rem",
               }}
             >
-              {d.greeting} {session.user?.name?.split(" ").pop()} 👋
+              {d.greeting} {session.user?.name?.split(" ").pop()}
             </h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
               {isDoctor ? d.roleDoctor : d.rolePatient} · {session.user?.email}
@@ -129,13 +129,13 @@ export default function DashboardPage() {
           }}
         >
           {[
-            { label: d.statTotal, value: appointments.length, icon: "📋" },
-            { label: d.statUpcoming, value: upcoming.length, icon: "⏰" },
-            { label: d.statCompleted, value: past.length, icon: "✅" },
+            { label: d.statTotal, value: appointments.length, icon: "" },
+            { label: d.statUpcoming, value: upcoming.length, icon: "" },
+            { label: d.statCompleted, value: past.length, icon: "" },
             {
               label: d.statPending,
               value: appointments.filter((a) => a.status === "PENDING").length,
-              icon: "🔔",
+              icon: "",
             },
           ].map((stat) => (
             <div key={stat.label} className="glass" style={{ padding: "1.25rem" }}>
@@ -182,7 +182,7 @@ export default function DashboardPage() {
                 color: "var(--text-muted)",
               }}
             >
-              <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>📭</div>
+              <div style={{ fontSize: "3rem", marginBottom: "1rem" }}></div>
               <p>{d.noAppointments}</p>
               {!isDoctor && (
                 <Link
@@ -229,7 +229,7 @@ export default function DashboardPage() {
                           flexShrink: 0,
                         }}
                       >
-                        🗓️
+                        
                       </div>
                       <div>
                         <div style={{ fontWeight: 700, fontSize: "0.9rem", color: "var(--text)" }}>

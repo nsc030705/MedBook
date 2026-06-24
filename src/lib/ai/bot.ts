@@ -5,14 +5,14 @@ import Groq from "groq-sdk";
 import { prisma } from "@/lib/prisma";
 import { MEDICAL_DOCS } from "@/data/medical-docs";
 
-// ===================== Confirmation Pending State =====================
+// ===================== Trạng thái chờ xác nhận =====================
 
 interface PendingBooking {
   doctor_id: string;
   schedule_id: string;
   date: string;
   reason?: string;
-  // Resolved display info
+  // Thông tin hiển thị đã được xử lý
   doctorName: string;
   specialty: string;
   hospital: string;
@@ -21,7 +21,7 @@ interface PendingBooking {
   dayOfWeek: string;
 }
 
-// In-memory store for pending booking confirmations (keyed by userId)
+// Lưu trữ tạm thời trên bộ nhớ các yêu cầu đặt lịch đang chờ xác nhận (khóa theo userId)
 const pendingBookings = new Map<string, PendingBooking>();
 
 const DAY_VI_GEMINI: Record<string, string> = {
@@ -29,24 +29,24 @@ const DAY_VI_GEMINI: Record<string, string> = {
   THURSDAY: "Thứ 5", FRIDAY: "Thứ 6", SATURDAY: "Thứ 7", SUNDAY: "Chủ nhật",
 };
 
-/** Build a Vietnamese confirmation message for a pending booking */
+/** Tạo tin nhắn xác nhận bằng tiếng Việt cho yêu cầu đặt lịch */
 function buildConfirmMessage(p: PendingBooking): string {
   const dateObj = new Date(p.date);
   const dateViStr = dateObj.toLocaleDateString("vi-VN", {
     weekday: "long", day: "numeric", month: "numeric", year: "numeric",
   });
   return (
-    "📋 **Xác nhận thông tin đặt lịch:**\n\n" +
-    `- 🏥 Bác sĩ: **${p.doctorName}** (${p.specialty})\n` +
-    `- 🏨 Bệnh viện: ${p.hospital || "Chưa có thông tin"}\n` +
-    `- 🕐 Giờ khám: **${p.startTime} - ${p.endTime}** (${DAY_VI_GEMINI[p.dayOfWeek] || p.dayOfWeek})\n` +
-    `- 📅 Ngày khám: **${dateViStr}**\n` +
-    (p.reason ? `- 📝 Lý do: ${p.reason}\n` : "") +
+    "**Xác nhận thông tin đặt lịch:**\n\n" +
+    `- Bác sĩ: **${p.doctorName}** (${p.specialty})\n` +
+    `- Bệnh viện: ${p.hospital || "Chưa có thông tin"}\n` +
+    `- Giờ khám: **${p.startTime} - ${p.endTime}** (${DAY_VI_GEMINI[p.dayOfWeek] || p.dayOfWeek})\n` +
+    `- Ngày khám: **${dateViStr}**\n` +
+    (p.reason ? `- Lý do: ${p.reason}\n` : "") +
     "\nGõ **\"xác nhận\"** để đặt lịch hoặc **\"hủy\"** để bắt đầu lại."
   );
 }
 
-/** Check if user message is a confirmation or cancellation */
+/** Kiểm tra xem tin nhắn của người dùng là đồng ý hay hủy bỏ */
 function isConfirmation(msg: string): boolean {
   const m = msg.toLowerCase().trim();
   return (
@@ -73,7 +73,7 @@ function getGroq(): Groq {
   return _groq;
 }
 
-// ===================== RAG — Simple keyword-based retrieval =====================
+// ===================== RAG — Tìm kiếm tài liệu dựa trên từ khóa đơn giản =====================
 
 function retrieveRelevantDocs(query: string, topK: number = 3): string {
   const queryLower = query.toLowerCase();
@@ -103,7 +103,7 @@ function retrieveRelevantDocs(query: string, topK: number = 3): string {
   );
 }
 
-// ===================== Tool Implementations =====================
+// ===================== Định nghĩa các Hàm (Tools) =====================
 
 async function checkDoctorSchedule(args: {
   doctor_name?: string;
@@ -144,7 +144,7 @@ async function checkDoctorSchedule(args: {
     take: 10,
   });
 
-  // Filter: prefer whole-word name matches to avoid "An" matching "Lan"
+  // Bộ lọc: ưu tiên khớp chính xác nguyên từ để tránh trường hợp "An" khớp với "Lan" to avoid "An" matching "Lan"
   let doctors = allDoctors;
   if (doctor_name) {
     const kw = doctor_name.toLowerCase();
@@ -195,13 +195,13 @@ async function getDoctorList(args: { specialty?: string }): Promise<string> {
   }
 
   return doctors
-    .map((d) => `• **${d.user.name}** [SYSTEM_DO_NOT_SHOW_THIS_ID: ${d.id}] — ${d.specialty} — ⭐ ${d.rating} — ${d.fee.toLocaleString("vi-VN")}đ — ${d.hospital}`)
+    .map((d) => `• **${d.user.name}** [SYSTEM_DO_NOT_SHOW_THIS_ID: ${d.id}] — ${d.specialty} — ${d.rating} sao — ${d.fee.toLocaleString("vi-VN")}d — ${d.hospital}`)
     .join("\n");
 }
 
 /**
- * Stage 1 — intercepted by the agentic loop: save pending state, return confirm prompt.
- * Stage 2 — executePendingBooking: called after user confirms.
+ * Giai đoạn 1 — Bị chặn bởi vòng lặp AI (agentic loop): lưu trạng thái chờ, trả về tin nhắn yêu cầu xác nhận.
+ * Giai đoạn 2 — executePendingBooking: được gọi sau khi người dùng đồng ý.
  */
 async function preparePendingBooking(args: {
   userId: string;
@@ -236,7 +236,7 @@ async function preparePendingBooking(args: {
     });
     if (existing) return "Khung giờ này đã có người đặt. Vui lòng chọn ngày hoặc giờ khác!";
 
-    // Save pending state
+    // Lưu trạng thái chờ xác nhận
     const pending: PendingBooking = {
       doctor_id,
       schedule_id,
@@ -251,7 +251,7 @@ async function preparePendingBooking(args: {
     };
     pendingBookings.set(userId, pending);
 
-    // Return confirmation prompt (NOT yet booked)
+    // Trả về tin nhắn yêu cầu xác nhận (CHƯA đặt lịch chính thức)
     return buildConfirmMessage(pending);
   } catch (error: any) {
     console.error("preparePendingBooking error:", error);
@@ -276,7 +276,7 @@ async function executePendingBooking(userId: string): Promise<string> {
     });
     if (existing) {
       pendingBookings.delete(userId);
-      return "⚠️ Khung giờ này vừa có người đặt rồi! Vui lòng chọn ngày hoặc giờ khác.";
+      return "Khung giờ này vừa có người đặt rồi! Vui lòng chọn ngày hoặc giờ khác.";
     }
 
     await prisma.appointment.create({
@@ -297,13 +297,13 @@ async function executePendingBooking(userId: string): Promise<string> {
     });
 
     return (
-      "🎉 **ĐẶT LỊCH THÀNH CÔNG!**\n\n" +
-      `- 🏥 Bác sĩ: **${pending.doctorName}** (${pending.specialty})\n` +
-      `- 🏨 Bệnh viện: ${pending.hospital || "Chưa có thông tin"}\n` +
-      `- 🕐 Giờ khám: **${pending.startTime} - ${pending.endTime}** (${DAY_VI_GEMINI[pending.dayOfWeek] || pending.dayOfWeek})\n` +
-      `- 📅 Ngày khám: **${dateViStr}**\n` +
-      `- 📌 Trạng thái: **Chờ xác nhận từ bác sĩ**\n\n` +
-      "Bạn có thể vào trang **\"Lịch Hẹn\"** để theo dõi nhé! 🗓️"
+      "**ĐẶT LỊCH THÀNH CÔNG!**\n\n" +
+      `- Bác sĩ: **${pending.doctorName}** (${pending.specialty})\n` +
+      `- Bệnh viện: ${pending.hospital || "Chưa có thông tin"}\n` +
+      `- Giờ khám: **${pending.startTime} - ${pending.endTime}** (${DAY_VI_GEMINI[pending.dayOfWeek] || pending.dayOfWeek})\n` +
+      `- Ngày khám: **${dateViStr}**\n` +
+      `- Trạng thái: **Chờ xác nhận từ bác sĩ**\n\n` +
+      "Bạn có thể vào trang **\"Lịch Hẹn\"** để theo dõi nhé!"
     );
   } catch (error: any) {
     pendingBookings.delete(userId);
@@ -312,7 +312,7 @@ async function executePendingBooking(userId: string): Promise<string> {
   }
 }
 
-// ===================== OpenAI Tool Definitions =====================
+// ===================== Định nghĩa các Công cụ (Tools) OpenAI =====================
 
 const TOOLS_OPENAI: Groq.Chat.Completions.ChatCompletionTool[] = [
   {
@@ -362,7 +362,7 @@ const TOOLS_OPENAI: Groq.Chat.Completions.ChatCompletionTool[] = [
   },
 ];
 
-// ===================== Main Chat Function =====================
+// ===================== Hàm Xử lý Chat Chính =====================
 
 const getSystemPrompt = () => {
   const todayStr = new Date().toLocaleDateString("vi-VN", {
@@ -392,8 +392,8 @@ export interface ChatMessage {
   content: string;
 }
 
-// Execute a single tool call
-// book_appointment now saves pending state instead of booking directly
+// Thực thi một lệnh gọi hàm
+// book_appointment giờ đây sẽ lưu trạng thái chờ thay vì đặt lịch trực tiếp
 async function executeTool(name: string, args: Record<string, any>, userId?: string): Promise<string> {
   if (name === "check_doctor_schedule") return await checkDoctorSchedule(args);
   if (name === "get_doctor_list") return await getDoctorList(args);
@@ -406,33 +406,33 @@ export async function chatWithAI(
   userMessage: string,
   userId?: string
 ): Promise<string> {
-  // ── Handle pending confirmation from previous book_appointment call ──────
+  // ── Xử lý yêu cầu xác nhận đặt lịch đang chờ từ lần gọi book_appointment trước đó ──────
   if (userId && pendingBookings.has(userId)) {
     if (isCancellation(userMessage)) {
       pendingBookings.delete(userId);
-      return "Đã hủy đặt lịch. Bạn cần hỗ trợ gì khác không? 😊";
+      return "Đã hủy đặt lịch. Bạn cần hỗ trợ gì khác không?";
     }
     if (isConfirmation(userMessage)) {
       return await executePendingBooking(userId);
     }
-    // Remind user that a booking is still pending
+    // Nhắc nhở người dùng rằng vẫn còn một lịch hẹn đang chờ xác nhận
     const pending = pendingBookings.get(userId)!;
     return (
-      "⏳ Bạn vẫn còn một lịch hẹn đang chờ xác nhận:\n\n" +
+      "Bạn vẫn còn một lịch hẹn đang chờ xác nhận:\n\n" +
       buildConfirmMessage(pending) +
       "\n\nNếu bạn muốn hủy và hỏi câu khác, gõ **\"hủy\"**."
     );
   }
 
-  // No API key — block execution
+  // Không có API key — chặn thực thi
   if (!process.env.GROQ_API_KEY) {
-    return "⚠️ **Lỗi cấu hình:** Hệ thống thiếu `GROQ_API_KEY`. Vui lòng thêm key vào file `.env` hoặc cấu hình Vercel.";
+    return "**Lỗi cấu hình:** Hệ thống thiếu `GROQ_API_KEY`. Vui lòng thêm key vào file `.env` hoặc cấu hình Vercel.";
   }
 
   try {
     const ragContext = retrieveRelevantDocs(userMessage);
 
-    // Build Groq message array (tương thích hoàn toàn API OpenAI)
+    // Tạo mảng tin nhắn Groq (tương thích hoàn toàn với API OpenAI)
     const history: Groq.Chat.Completions.ChatCompletionMessageParam[] = [
       { role: "system", content: getSystemPrompt() },
       ...messages.slice(-10).map((m) => ({
@@ -445,22 +445,22 @@ export async function chatWithAI(
     let response = await getGroq().chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: history,
-      tools: TOOLS_OPENAI as any, // Ép kiểu vì Groq type slightly differs but runtime is same
+      tools: TOOLS_OPENAI as any, // Ép kiểu vì cấu trúc type của Groq hơi khác nhưng khi chạy thì giống hệt
       tool_choice: "auto",
       max_tokens: 1000,
     });
 
     let message = response.choices[0].message;
 
-    // Agentic loop — handle tool calls
+    // Vòng lặp Agentic — xử lý các yêu cầu gọi hàm (tool calls)
     const MAX_ITERATIONS = 4;
     let iterations = 0;
 
     while (message.tool_calls && message.tool_calls.length > 0 && iterations < MAX_ITERATIONS) {
-      // Add assistant message with tool calls
+      // Thêm tin nhắn của assistant (chứa yêu cầu gọi hàm) vào lịch sử
       history.push(message as Groq.Chat.Completions.ChatCompletionMessageParam);
 
-      // Execute all tool calls in parallel
+      // Thực thi song song tất cả các hàm được gọi
       const toolResults = await Promise.all(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (message.tool_calls as any[]).map(async (tc) => {
@@ -476,7 +476,7 @@ export async function chatWithAI(
 
       history.push(...toolResults);
 
-      // Continue the conversation
+      // Gửi kết quả lại cho mô hình để tiếp tục cuộc trò chuyện
       response = await getGroq().chat.completions.create({
         model: "llama-3.3-70b-versatile",
         messages: history,
@@ -495,15 +495,15 @@ export async function chatWithAI(
     // Phân tích lỗi để trả về thông báo rõ ràng hơn
     const msg = error?.message || "";
     if (msg.includes("401") || msg.includes("Incorrect API key") || msg.includes("invalid_api_key")) {
-      return "⚠️ **API key không hợp lệ.** Vui lòng kiểm tra lại `GROQ_API_KEY` trong file `.env`.";
+      return "**API key không hợp lệ.** Vui lòng kiểm tra lại `GROQ_API_KEY` trong file `.env`.";
     }
     if (msg.includes("429") || msg.includes("rate limit") || msg.includes("quota")) {
-      return "⏳ **Quá giới hạn request.** Vui lòng chờ vài giây rồi thử lại.";
+      return "**Quá giới hạn request.** Vui lòng chờ vài giây rồi thử lại.";
     }
     if (msg.includes("timeout") || msg.includes("ECONNRESET") || msg.includes("ENOTFOUND")) {
-      return "🌐 **Không thể kết nối máy chủ AI.** Kiểm tra kết nối mạng và thử lại.";
+      return "**Không thể kết nối máy chủ AI.** Kiểm tra kết nối mạng và thử lại.";
     }
-    return "⚠️ **MedBot gặp lỗi.** Vui lòng thử lại sau vài giây.";
+    return "**MedBot gặp lỗi.** Vui lòng thử lại sau vài giây.";
   }
 }
 

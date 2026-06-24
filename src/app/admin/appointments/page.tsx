@@ -42,18 +42,18 @@ interface Patient {
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const STATUS_META: Record<string, { bg: string; color: string; border: string; label: string; icon: string }> = {
-  PENDING:   { bg: "rgba(251,191,36,0.12)",  color: "#fbbf24", border: "rgba(251,191,36,0.3)",  label: "Chờ xác nhận", icon: "⏳" },
-  CONFIRMED: { bg: "rgba(52,211,153,0.12)",  color: "#34d399", border: "rgba(52,211,153,0.3)",  label: "Đã xác nhận",  icon: "✅" },
-  CANCELLED: { bg: "rgba(248,113,113,0.12)", color: "#f87171", border: "rgba(248,113,113,0.3)", label: "Đã hủy",        icon: "❌" },
-  COMPLETED: { bg: "rgba(99,102,241,0.12)",  color: "#a5b4fc", border: "rgba(99,102,241,0.3)",  label: "Hoàn thành",   icon: "🏁" },
+  PENDING:   { bg: "rgba(251,191,36,0.12)",  color: "#fbbf24", border: "rgba(251,191,36,0.3)",  label: "Chờ xác nhận", icon: "" },
+  CONFIRMED: { bg: "rgba(52,211,153,0.12)",  color: "#34d399", border: "rgba(52,211,153,0.3)",  label: "Đã xác nhận",  icon: "" },
+  CANCELLED: { bg: "rgba(248,113,113,0.12)", color: "#f87171", border: "rgba(248,113,113,0.3)", label: "Đã hủy",        icon: "" },
+  COMPLETED: { bg: "rgba(99,102,241,0.12)",  color: "#a5b4fc", border: "rgba(99,102,241,0.3)",  label: "Hoàn thành",   icon: "" },
 };
 
 const FILTERS = [
   { value: "", label: "Tất cả" },
-  { value: "PENDING",   label: "⏳ Chờ xác nhận" },
-  { value: "CONFIRMED", label: "✅ Đã xác nhận" },
-  { value: "CANCELLED", label: "❌ Đã hủy" },
-  { value: "COMPLETED", label: "🏁 Hoàn thành" },
+  { value: "PENDING",   label: "Chờ xác nhận" },
+  { value: "CONFIRMED", label: "Đã xác nhận" },
+  { value: "CANCELLED", label: "Đã hủy" },
+  { value: "COMPLETED", label: "Hoàn thành" },
 ] as const;
 
 // ─── Modal — Confirm / Cancel / Delete ───────────────────────────────────────
@@ -73,9 +73,9 @@ function ConfirmModal({
 }) {
   const [notes, setNotes] = useState(appointment.notes || "");
   const cfg = {
-    confirm: { title: "✅ Xác nhận lịch hẹn", btnClass: "btn-success", btnText: "Xác nhận", color: "#34d399" },
-    cancel:  { title: "❌ Hủy lịch hẹn",      btnClass: "btn-danger",   btnText: "Hủy lịch",  color: "#f87171" },
-    delete:  { title: "🗑️ Xóa lịch hẹn",      btnClass: "btn-danger",   btnText: "Xóa",       color: "#f87171" },
+    confirm: { title: "Xác nhận lịch hẹn", btnClass: "btn-success", btnText: "Xác nhận", color: "#34d399" },
+    cancel:  { title: "Hủy lịch hẹn",      btnClass: "btn-danger",   btnText: "Hủy lịch",  color: "#f87171" },
+    delete:  { title: "Xóa lịch hẹn",      btnClass: "btn-danger",   btnText: "Xóa",       color: "#f87171" },
   }[type];
 
   return (
@@ -209,7 +209,7 @@ function CreateModal({
       <div className="glass" style={{ width: "100%", maxWidth: 560, padding: "2rem", margin: "auto" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
           <h3 style={{ fontWeight: 800, fontSize: "1.1rem", color: "var(--text)" }}>
-            📅 Thêm lịch hẹn mới
+            Thêm lịch hẹn mới
           </h3>
           <button onClick={onClose} style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer", fontSize: "1.2rem" }}>✕</button>
         </div>
@@ -294,7 +294,7 @@ function CreateModal({
 
             {error && (
               <div style={{ background: "rgba(248,113,113,0.1)", border: "1px solid rgba(248,113,113,0.3)", borderRadius: 8, padding: "0.6rem 0.9rem", color: "#f87171", fontSize: "0.82rem", marginBottom: "1rem" }}>
-                ⚠️ {error}
+                {error}
               </div>
             )}
 
@@ -303,7 +303,7 @@ function CreateModal({
                 Hủy
               </button>
               <button type="submit" className="btn-primary" disabled={submitting} style={{ opacity: submitting ? 0.7 : 1 }}>
-                {submitting ? <span className="spinner" style={{ width: 14, height: 14 }} /> : "📅 Tạo lịch hẹn"}
+                {submitting ? <span className="spinner" style={{ width: 14, height: 14 }} /> : "Tạo lịch hẹn"}
               </button>
             </div>
           </form>
@@ -392,7 +392,7 @@ export default function AdminAppointmentsPage() {
         body: JSON.stringify({ status: newStatus, notes }),
       });
       if (res.ok) {
-        showToast(type === "confirm" ? "Đã xác nhận lịch hẹn ✅" : "Đã hủy lịch hẹn");
+        showToast(type === "confirm" ? "Đã xác nhận lịch hẹn" : "Đã hủy lịch hẹn");
         setActionModal(null);
         fetchAppointments();
       } else {
@@ -424,7 +424,7 @@ export default function AdminAppointmentsPage() {
               ← Admin
             </Link>
             <h1 style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--text)", margin: "0.25rem 0 0", letterSpacing: "-0.02em" }}>
-              📋 Quản lý Lịch Hẹn
+              Quản lý Lịch Hẹn
             </h1>
             <p style={{ color: "var(--text-muted)", fontSize: "0.82rem", marginTop: "0.2rem" }}>
               {total.toLocaleString()} lịch hẹn tổng cộng
@@ -443,7 +443,7 @@ export default function AdminAppointmentsPage() {
         <div className="glass" style={{ padding: "1rem 1.25rem", marginBottom: "1.25rem", display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
           <input
             className="input"
-            placeholder="🔍 Tìm bệnh nhân hoặc bác sĩ..."
+            placeholder="Tìm bệnh nhân hoặc bác sĩ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{ flex: 1, minWidth: 200 }}
@@ -475,7 +475,7 @@ export default function AdminAppointmentsPage() {
           </div>
         ) : appointments.length === 0 ? (
           <div className="glass" style={{ textAlign: "center", padding: "4rem" }}>
-            <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>📭</div>
+            <div style={{ fontSize: "3rem", marginBottom: "1rem" }}></div>
             <p style={{ color: "var(--text-muted)" }}>Không có lịch hẹn nào{search || statusFilter ? " phù hợp" : ""}</p>
           </div>
         ) : (
@@ -517,11 +517,11 @@ export default function AdminAppointmentsPage() {
                     </div>
 
                     <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", paddingLeft: 2 }}>
-                      📅 {dateObj.toLocaleDateString("vi-VN", { weekday: "short", day: "numeric", month: "numeric", year: "numeric" })}
+                      {dateObj.toLocaleDateString("vi-VN", { weekday: "short", day: "numeric", month: "numeric", year: "numeric" })}
                       {" "}
-                      🕐 {dateObj.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}
-                      {apt.reason && <span style={{ marginLeft: "0.5rem" }}>· 📝 {apt.reason}</span>}
-                      {apt.notes && <span style={{ marginLeft: "0.5rem", color: "var(--primary)" }}>· 💬 {apt.notes}</span>}
+                      {dateObj.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}
+                      {apt.reason && <span style={{ marginLeft: "0.5rem" }}>- {apt.reason}</span>}
+                      {apt.notes && <span style={{ marginLeft: "0.5rem", color: "var(--primary)" }}>- {apt.notes}</span>}
                     </div>
                   </div>
 
@@ -531,7 +531,7 @@ export default function AdminAppointmentsPage() {
                       background: s.bg, color: s.color, border: `1px solid ${s.border}`,
                       padding: "3px 10px", borderRadius: 20, fontSize: "0.72rem", fontWeight: 600,
                     }}>
-                      {s.icon} {s.label}
+                      {s.label}
                     </span>
 
                     {/* Action buttons */}
@@ -542,14 +542,14 @@ export default function AdminAppointmentsPage() {
                           className="btn-success"
                           style={{ padding: "0.3rem 0.75rem", fontSize: "0.78rem" }}
                         >
-                          ✅ Xác nhận
+                          Xác nhận
                         </button>
                         <button
                           onClick={() => setActionModal({ type: "cancel", apt })}
                           className="btn-danger"
                           style={{ padding: "0.3rem 0.75rem", fontSize: "0.78rem" }}
                         >
-                          ❌ Hủy
+                          Hủy
                         </button>
                       </>
                     )}
@@ -559,7 +559,7 @@ export default function AdminAppointmentsPage() {
                         className="btn-danger"
                         style={{ padding: "0.3rem 0.75rem", fontSize: "0.78rem" }}
                       >
-                        ❌ Hủy
+                        Hủy
                       </button>
                     )}
                     <button
@@ -571,7 +571,7 @@ export default function AdminAppointmentsPage() {
                       }}
                       title="Xóa lịch hẹn"
                     >
-                      🗑️
+                      X
                     </button>
                   </div>
                 </div>
@@ -618,7 +618,7 @@ export default function AdminAppointmentsPage() {
       )}
       {showCreate && (
         <CreateModal
-          onCreated={() => { setShowCreate(false); showToast("Đã tạo lịch hẹn thành công 📅"); fetchAppointments(); }}
+          onCreated={() => { setShowCreate(false); showToast("Tạo lịch hẹn thành công"); fetchAppointments(); }}
           onClose={() => setShowCreate(false)}
         />
       )}

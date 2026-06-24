@@ -108,7 +108,7 @@ export default function RegisterPage() {
               animation: "pulse-glow 2s infinite",
             }}
           >
-            🏥
+            +
           </div>
           <h1
             style={{
@@ -136,7 +136,7 @@ export default function RegisterPage() {
               animation: "fadeInUp 0.4s ease",
             }}
           >
-            <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🎉</div>
+            <div style={{ fontSize: "3rem", marginBottom: "1rem" }}></div>
             <h2 style={{ fontWeight: 700, color: "var(--text)", marginBottom: "0.5rem" }}>
               {r.successTitle}
             </h2>
@@ -192,7 +192,7 @@ export default function RegisterPage() {
                     }}
                   >
                     <div style={{ fontSize: "1.4rem", marginBottom: "0.2rem" }}>
-                      {rv === "PATIENT" ? "👤" : "🩺"}
+                      {rv === "PATIENT" ? "P" : "D"}
                     </div>
                     {rv === "PATIENT" ? r.rolePatient : r.roleDoctor}
                   </button>
@@ -286,7 +286,7 @@ export default function RegisterPage() {
                       color: "var(--text-dim)",
                     }}
                   >
-                    {showPass ? "🙈" : "👁️"}
+                    {showPass ? "Ẩn" : "Hiện"}
                   </button>
                 </div>
               </div>

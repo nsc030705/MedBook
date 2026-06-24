@@ -6,9 +6,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const STATS_VALUES = ["50+", "15+", "1,000+", "24/7"];
 
 const DOCTORS_PREVIEW = [
-  { name: "TS.BS Nguyễn Văn Hùng", specialty: "Cardiology", specialtyVi: "Tim mạch", rating: 4.9, emoji: "❤️" },
-  { name: "PGS.TS Trần Thị Mai", specialty: "Endocrinology", specialtyVi: "Nội tiết", rating: 4.8, emoji: "🔬" },
-  { name: "BS.CKII Phạm Thị Lan", specialty: "Obstetrics", specialtyVi: "Sản phụ khoa", rating: 4.9, emoji: "🌸" },
+  { name: "TS.BS Nguyễn Văn Hùng", specialty: "Cardiology", specialtyVi: "Tim mạch", rating: 4.9 },
+  { name: "PGS.TS Trần Thị Mai", specialty: "Endocrinology", specialtyVi: "Nội tiết", rating: 4.8 },
+  { name: "BS.CKII Phạm Thị Lan", specialty: "Obstetrics", specialtyVi: "Sản phụ khoa", rating: 4.9 },
 ];
 
 export default function HomePage() {
@@ -245,7 +245,7 @@ export default function HomePage() {
                     border: "1px solid rgba(14,165,233,0.2)",
                   }}
                 >
-                  {doc.emoji}
+                  {doc.name[0]}
                 </div>
                 <div
                   style={{
@@ -268,7 +268,7 @@ export default function HomePage() {
                   {locale === "vi" ? doc.specialtyVi : doc.specialty}
                 </div>
                 <div className="stars">
-                  {"⭐".repeat(5)}{" "}
+                  {"*".repeat(5)}{" "}
                   <span style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
                     {doc.rating}
                   </span>
@@ -337,7 +337,7 @@ export default function HomePage() {
                     display: "inline-block",
                   }}
                 >
-                  {feat.icon}
+                  {feat.icon || ""}
                 </div>
                 <h3
                   style={{
@@ -472,7 +472,7 @@ export default function HomePage() {
                       flexShrink: 0,
                     }}
                   >
-                    🤖
+                    AI
                   </div>
                   <div
                     style={{

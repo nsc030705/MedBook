@@ -72,7 +72,7 @@ export default function AdminDoctorsPage() {
               ← Admin
             </Link>
             <h1 style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--text)", margin: "0.25rem 0 0" }}>
-              🩺 Quản lý Bác Sĩ
+              Quản lý Bác Sĩ
             </h1>
           </div>
           <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
@@ -89,7 +89,7 @@ export default function AdminDoctorsPage() {
         <div className="glass" style={{ padding: "1rem 1.25rem", marginBottom: "1.25rem", display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
           <input
             className="input"
-            placeholder="🔍 Tìm kiếm bác sĩ..."
+            placeholder="Tìm kiếm bác sĩ..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{ flex: 1, minWidth: 200 }}
@@ -107,7 +107,7 @@ export default function AdminDoctorsPage() {
                 fontSize: "0.8rem", fontWeight: 600, whiteSpace: "nowrap",
               }}
             >
-              {f === "all" ? "Tất cả" : f === "pending" ? "⏳ Chờ duyệt" : "✅ Đã duyệt"}
+              {f === "all" ? "Tất cả" : f === "pending" ? "Chờ duyệt" : "Đã duyệt"}
             </button>
           ))}
         </div>
@@ -121,7 +121,7 @@ export default function AdminDoctorsPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
             {doctors.length === 0 ? (
               <div style={{ textAlign: "center", padding: "4rem", color: "var(--text-muted)" }}>
-                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🔍</div>
+                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}></div>
                 <p>Không tìm thấy bác sĩ nào</p>
               </div>
             ) : doctors.map((doc) => (
@@ -151,8 +151,8 @@ export default function AdminDoctorsPage() {
                       {doc.user.name}
                       {" "}
                       {doc.isVerified
-                        ? <span style={{ color: "#34d399", fontSize: "0.75rem" }}>✅ Đã duyệt</span>
-                        : <span style={{ color: "#fbbf24", fontSize: "0.75rem" }}>⏳ Chờ duyệt</span>
+                        ? <span style={{ color: "#34d399", fontSize: "0.75rem" }}>Xác nhận</span>
+                        : <span style={{ color: "#fbbf24", fontSize: "0.75rem" }}>Chờ duyệt</span>
                       }
                     </div>
                     <div style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
@@ -160,7 +160,7 @@ export default function AdminDoctorsPage() {
                       {doc.hospital && ` · ${doc.hospital}`}
                     </div>
                     <div style={{ fontSize: "0.72rem", color: "var(--text-dim)", marginTop: "0.15rem" }}>
-                      {doc._count.appointments} lịch hẹn · ⭐ {doc.rating}
+                      {doc._count.appointments} lịch hẹn · {doc.rating} sao
                       · Đăng ký {new Date(doc.createdAt).toLocaleDateString("vi-VN")}
                     </div>
                   </div>
@@ -174,7 +174,7 @@ export default function AdminDoctorsPage() {
                       className="btn-success"
                       style={{ padding: "0.4rem 0.9rem", fontSize: "0.82rem", opacity: updating === doc.id ? 0.7 : 1 }}
                     >
-                      {updating === doc.id ? <div className="spinner" style={{ width: 14, height: 14 }} /> : "✅ Phê duyệt"}
+                      {updating === doc.id ? <div className="spinner" style={{ width: 14, height: 14 }} /> : "Phê duyệt"}
                     </button>
                   ) : (
                     <button
@@ -183,7 +183,7 @@ export default function AdminDoctorsPage() {
                       className="btn-danger"
                       style={{ padding: "0.4rem 0.9rem", fontSize: "0.82rem", opacity: updating === doc.id ? 0.7 : 1 }}
                     >
-                      {updating === doc.id ? <div className="spinner" style={{ width: 14, height: 14 }} /> : "🚫 Thu hồi"}
+                      {updating === doc.id ? <div className="spinner" style={{ width: 14, height: 14 }} /> : "Thu hồi"}
                     </button>
                   )}
                 </div>

@@ -150,7 +150,7 @@ export default function DoctorsPage() {
           </div>
         ) : doctors.length === 0 ? (
           <div style={{ textAlign: "center", padding: "5rem", color: "var(--text-muted)" }}>
-            <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🔍</div>
+            <div style={{ fontSize: "4rem", marginBottom: "1rem" }}></div>
             <p>{doc.notFound}</p>
           </div>
         ) : (
@@ -209,7 +209,7 @@ export default function DoctorsPage() {
                         {doctor.specialty}
                       </div>
                       <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                        🏥 {doctor.hospital}
+                        {doctor.hospital}
                       </div>
                     </div>
                   </div>
@@ -217,7 +217,7 @@ export default function DoctorsPage() {
                   {/* Rating + experience */}
                   <div style={{ display: "flex", gap: "1.25rem", fontSize: "0.8rem" }}>
                     <div>
-                      <span style={{ color: "#fbbf24" }}>★</span>{" "}
+                      <span style={{ color: "#fbbf24" }}>Sao</span>{" "}
                       <span style={{ fontWeight: 700, color: "var(--text)" }}>{doctor.rating}</span>{" "}
                       <span style={{ color: "var(--text-muted)" }}>({doctor.reviewCount})</span>
                     </div>

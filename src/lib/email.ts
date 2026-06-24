@@ -29,7 +29,7 @@ function emailBase(content: string) {
           <!-- Header -->
           <tr>
             <td style="background:linear-gradient(135deg,#0ea5e9,#6366f1);padding:32px 40px;text-align:center;">
-              <div style="font-size:32px;margin-bottom:8px;">🏥</div>
+              <div style="font-size:32px;margin-bottom:8px;">+</div>
               <h1 style="margin:0;color:white;font-size:24px;font-weight:800;letter-spacing:-0.02em;">MedBook</h1>
               <p style="margin:4px 0 0;color:rgba(255,255,255,0.7);font-size:13px;">Hệ Thống Đặt Lịch Y Tế Thông Minh</p>
             </td>
@@ -65,7 +65,7 @@ async function sendEmail(opts: {
 }) {
   if (!RESEND_API_KEY) {
     // Graceful fallback — log to console when no API key
-    console.log(`\n📧 [EMAIL LOG - No RESEND_API_KEY set]\nTo: ${opts.to}\nSubject: ${opts.subject}\n`);
+    console.log(`\n[EMAIL LOG - No RESEND_API_KEY set]\nTo: ${opts.to}\nSubject: ${opts.subject}\n`);
     return { success: true, mock: true };
   }
 
@@ -114,7 +114,7 @@ export async function sendAppointmentConfirmation(opts: {
   const timeStr = opts.date.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
 
   const html = emailBase(`
-    <h2 style="margin:0 0 8px;color:#fff;font-size:20px;font-weight:700;">Lịch hẹn đã được ghi nhận ✅</h2>
+    <h2 style="margin:0 0 8px;color:#fff;font-size:20px;font-weight:700;">Lịch hẹn đã được ghi nhận</h2>
     <p style="color:rgba(255,255,255,0.6);margin:0 0 28px;font-size:14px;line-height:1.6;">
       Xin chào <strong style="color:#fff;">${opts.patientName}</strong>, lịch hẹn của bạn đã được tạo thành công và đang chờ bác sĩ xác nhận.
     </p>
@@ -125,7 +125,7 @@ export async function sendAppointmentConfirmation(opts: {
         <tr><td style="padding:6px 0;color:rgba(255,255,255,0.5);font-size:13px;">Bệnh viện</td><td style="padding:6px 0;color:#fff;font-size:14px;">${opts.hospital}</td></tr>
         <tr><td style="padding:6px 0;color:rgba(255,255,255,0.5);font-size:13px;">Ngày khám</td><td style="padding:6px 0;color:#fff;font-size:14px;">${dateStr}</td></tr>
         <tr><td style="padding:6px 0;color:rgba(255,255,255,0.5);font-size:13px;">Giờ khám</td><td style="padding:6px 0;color:#34d399;font-size:14px;font-weight:600;">${timeStr}</td></tr>
-        <tr><td style="padding:6px 0;color:rgba(255,255,255,0.5);font-size:13px;">Trạng thái</td><td style="padding:6px 0;"><span style="background:rgba(251,191,36,0.15);color:#fbbf24;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;">⏳ Chờ xác nhận</span></td></tr>
+        <tr><td style="padding:6px 0;color:rgba(255,255,255,0.5);font-size:13px;">Trạng thái</td><td style="padding:6px 0;"><span style="background:rgba(251,191,36,0.15);color:#fbbf24;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;">Chờ xác nhận</span></td></tr>
       </table>
     </div>
     <p style="color:rgba(255,255,255,0.5);font-size:13px;margin:0 0 20px;line-height:1.6;">
@@ -138,7 +138,7 @@ export async function sendAppointmentConfirmation(opts: {
 
   return sendEmail({
     to: opts.patientEmail,
-    subject: `✅ Đã ghi nhận lịch hẹn với BS. ${opts.doctorName}`,
+    subject: `Đã ghi nhận lịch hẹn với BS. ${opts.doctorName}`,
     html,
   });
 }
@@ -158,7 +158,7 @@ export async function sendDoctorNewAppointment(opts: {
   const timeStr = opts.date.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
 
   const html = emailBase(`
-    <h2 style="margin:0 0 8px;color:#fff;font-size:20px;font-weight:700;">Lịch hẹn mới cần xác nhận 🔔</h2>
+    <h2 style="margin:0 0 8px;color:#fff;font-size:20px;font-weight:700;">Lịch hẹn mới cần xác nhận</h2>
     <p style="color:rgba(255,255,255,0.6);margin:0 0 28px;font-size:14px;line-height:1.6;">
       Xin chào <strong style="color:#fff;">BS. ${opts.doctorName}</strong>, bạn vừa nhận được một yêu cầu đặt lịch hẹn mới.
     </p>
@@ -181,7 +181,7 @@ export async function sendDoctorNewAppointment(opts: {
 
   return sendEmail({
     to: opts.doctorEmail,
-    subject: `🔔 Lịch hẹn mới từ ${opts.patientName} — ${timeStr} ${dateStr}`,
+    subject: `Lịch hẹn mới từ ${opts.patientName} — ${timeStr} ${dateStr}`,
     html,
   });
 }
@@ -203,7 +203,7 @@ export async function sendAppointmentResult(opts: {
 
   const html = emailBase(`
     <h2 style="margin:0 0 8px;color:#fff;font-size:20px;font-weight:700;">
-      ${isConfirmed ? "Lịch hẹn đã được xác nhận 🎉" : "Lịch hẹn đã bị từ chối ❌"}
+      ${isConfirmed ? "Lịch hẹn đã được xác nhận" : "Lịch hẹn đã bị từ chối"}
     </h2>
     <p style="color:rgba(255,255,255,0.6);margin:0 0 28px;font-size:14px;line-height:1.6;">
       Xin chào <strong style="color:#fff;">${opts.patientName}</strong>,
@@ -219,7 +219,7 @@ export async function sendAppointmentResult(opts: {
         <tr><td style="padding:6px 0;color:rgba(255,255,255,0.5);font-size:13px;">Trạng thái</td>
           <td style="padding:6px 0;">
             <span style="background:${isConfirmed ? "rgba(52,211,153,0.15)" : "rgba(248,113,113,0.15)"};color:${isConfirmed ? "#34d399" : "#f87171"};padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;">
-              ${isConfirmed ? "✅ Đã xác nhận" : "❌ Đã từ chối"}
+              ${isConfirmed ? "Đã xác nhận" : "Đã từ chối"}
             </span>
           </td>
         </tr>
@@ -227,7 +227,7 @@ export async function sendAppointmentResult(opts: {
       </table>
     </div>
     ${isConfirmed
-      ? `<p style="color:rgba(255,255,255,0.5);font-size:13px;margin:0 0 20px;">Hãy đến đúng giờ và mang theo CMND/CCCD. Chúc bạn sức khỏe! 💊</p>`
+      ? `<p style="color:rgba(255,255,255,0.5);font-size:13px;margin:0 0 20px;">Hãy đến đúng giờ và mang theo CMND/CCCD. Chúc bạn sức khỏe!</p>`
       : `<p style="color:rgba(255,255,255,0.5);font-size:13px;margin:0 0 20px;">Bạn có thể đặt lịch với bác sĩ khác hoặc chọn thời điểm khác phù hợp hơn.</p>`
     }
     <a href="${APP_URL}/dashboard" style="display:inline-block;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-weight:700;font-size:14px;">
@@ -237,7 +237,7 @@ export async function sendAppointmentResult(opts: {
 
   return sendEmail({
     to: opts.patientEmail,
-    subject: `${isConfirmed ? "🎉 Xác nhận" : "❌ Từ chối"} lịch hẹn với BS. ${opts.doctorName}`,
+    subject: `${isConfirmed ? "Xác nhận" : "Từ chối"} lịch hẹn với BS. ${opts.doctorName}`,
     html,
   });
 }
@@ -257,7 +257,7 @@ export async function sendAppointmentReminder(opts: {
   const timeStr = opts.date.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
 
   const html = emailBase(`
-    <h2 style="margin:0 0 8px;color:#fff;font-size:20px;font-weight:700;">Nhắc nhở lịch hẹn ngày mai ⏰</h2>
+    <h2 style="margin:0 0 8px;color:#fff;font-size:20px;font-weight:700;">Nhắc nhở lịch hẹn ngày mai</h2>
     <p style="color:rgba(255,255,255,0.6);margin:0 0 28px;font-size:14px;line-height:1.6;">
       Xin chào <strong style="color:#fff;">${opts.patientName}</strong>, đây là nhắc nhở lịch hẹn khám bệnh của bạn vào <strong style="color:#0ea5e9;">ngày mai</strong>.
     </p>
@@ -272,7 +272,7 @@ export async function sendAppointmentReminder(opts: {
     </div>
     <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);border-radius:8px;padding:16px;margin-bottom:24px;">
       <p style="margin:0;color:rgba(255,255,255,0.7);font-size:13px;line-height:1.6;">
-        💡 <strong style="color:#fbbf24;">Lưu ý:</strong> Vui lòng mang theo CMND/CCCD và đến trước 15 phút để làm thủ tục.
+        <strong style="color:#fbbf24;">Lưu ý:</strong> Vui lòng mang theo CMND/CCCD và đến trước 15 phút để làm thủ tục.
       </p>
     </div>
     <a href="${APP_URL}/dashboard" style="display:inline-block;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-weight:700;font-size:14px;">
@@ -282,7 +282,7 @@ export async function sendAppointmentReminder(opts: {
 
   return sendEmail({
     to: opts.patientEmail,
-    subject: `⏰ Nhắc nhở: Lịch hẹn với BS. ${opts.doctorName} vào ${timeStr} ngày mai`,
+    subject: `Nhắc nhở: Lịch hẹn với BS. ${opts.doctorName} vào ${timeStr} ngày mai`,
     html,
   });
 }

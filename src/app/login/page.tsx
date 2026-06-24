@@ -44,8 +44,8 @@ export default function LoginPage() {
   };
 
   const DEMO_ACCOUNTS = [
-    { email: "patient@demo.com", role: "PATIENT" as const, label: l.demoPatient, icon: "👤" },
-    { email: "nguyen.van.hung@medbook.vn", role: "DOCTOR" as const, label: l.demoDoctor, icon: "🩺" },
+    { email: "patient@demo.com", role: "PATIENT" as const, label: l.demoPatient, icon: "" },
+    { email: "nguyen.van.hung@medbook.vn", role: "DOCTOR" as const, label: l.demoDoctor, icon: "" },
   ];
 
   return (
@@ -88,7 +88,7 @@ export default function LoginPage() {
               boxShadow: "0 0 30px rgba(14,165,233,0.3)",
             }}
           >
-            🏥
+            +
           </div>
           <h1
             style={{
@@ -236,7 +236,7 @@ export default function LoginPage() {
                     color: "var(--text-dim)",
                   }}
                 >
-                  {showPass ? "🙈" : "👁️"}
+                  {showPass ? "Ẩn" : "Hiện"}
                 </button>
               </div>
             </div>

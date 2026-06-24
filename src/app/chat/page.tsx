@@ -157,7 +157,7 @@ export default function ChatPage() {
 
       if (!res.ok) {
         const errMsg = res.status === 401
-          ? "🔐 Phiên đăng nhập đã hết hạn. Vui lòng **đăng xuất và đăng nhập lại** để tiếp tục sử dụng chatbot."
+          ? "Phiên đăng nhập đã hết hạn. Vui lòng **đăng xuất và đăng nhập lại** để tiếp tục sử dụng chatbot."
           : (data.error || c.errorGeneral);
         setMessages((prev) => [
           ...prev,
@@ -258,7 +258,7 @@ export default function ChatPage() {
               </div>
             ) : sessions.length === 0 ? (
               <div style={{ textAlign: "center", padding: "2rem 1rem", color: "var(--text-dim)", fontSize: "0.78rem" }}>
-                <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>💬</div>
+                <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}></div>
                 {c.noHistory}
               </div>
             ) : (
@@ -326,7 +326,7 @@ export default function ChatPage() {
                     }}
                     title={c.deleteConversation}
                   >
-                    🗑️
+                    X
                   </button>
                 </div>
               ))
@@ -380,22 +380,11 @@ export default function ChatPage() {
                 flexShrink: 0,
               }}
             >
-              🤖
+              AI
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 700, color: "var(--text)", fontSize: "0.95rem" }}>MedBot AI</div>
               <div style={{ fontSize: "0.72rem", color: "var(--accent)" }}>
-                <span
-                  style={{
-                    display: "inline-block",
-                    width: 6,
-                    height: 6,
-                    borderRadius: "50%",
-                    background: "var(--accent)",
-                    marginRight: 4,
-                  }}
-                />
-                {c.active}
               </div>
             </div>
             <Link href="/doctors" className="btn-ghost" style={{ fontSize: "0.8rem", padding: "0.35rem 0.85rem" }}>
@@ -445,7 +434,7 @@ export default function ChatPage() {
                       marginTop: 2,
                     }}
                   >
-                    🤖
+                    AI
                   </div>
                 )}
 
@@ -504,7 +493,7 @@ export default function ChatPage() {
                     flexShrink: 0,
                   }}
                 >
-                  🤖
+                  AI
                 </div>
                 <div
                   style={{

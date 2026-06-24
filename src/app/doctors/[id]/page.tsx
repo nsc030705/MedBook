@@ -188,7 +188,7 @@ export default function DoctorDetailPage() {
                     {doctor.specialty}
                   </div>
                   <div style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-                    🏥 {doctor.hospital}
+                    {doctor.hospital}
                   </div>
                 </div>
               </div>
@@ -197,7 +197,7 @@ export default function DoctorDetailPage() {
               <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
                 <div>
                   <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text)" }}>
-                    <span style={{ color: "#fbbf24" }}>★</span> {doctor.rating}
+                    <span style={{ color: "#fbbf24" }}>Sao</span> {doctor.rating}
                   </div>
                   <div style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>
                     {doctor.reviewCount} {dd.reviews}
@@ -226,7 +226,7 @@ export default function DoctorDetailPage() {
             {/* Schedule */}
             <div className="glass" style={{ padding: "1.5rem" }}>
               <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text)", marginBottom: "1.25rem" }}>
-                📅 {dd.scheduleTitle}
+                {dd.scheduleTitle}
               </h2>
               {Object.keys(groupedSchedules).length === 0 ? (
                 <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>{dd.noSlots}</p>
@@ -291,7 +291,7 @@ export default function DoctorDetailPage() {
             <div className="glass" style={{ padding: "1.5rem", position: "sticky", top: 80 }}>
               {success ? (
                 <div style={{ textAlign: "center", padding: "1.5rem" }}>
-                  <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🎉</div>
+                  <div style={{ fontSize: "3rem", marginBottom: "1rem" }}></div>
                   <h3 style={{ fontWeight: 700, color: "var(--text)", marginBottom: "0.5rem" }}>
                     {dd.successTitle}
                   </h3>
@@ -314,7 +314,7 @@ export default function DoctorDetailPage() {
               ) : (
                 <>
                   <h2 style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text)", marginBottom: "1.25rem" }}>
-                    📝 {dd.bookingTitle} {doctor.user.name.split(" ").pop()}
+                    {dd.bookingTitle} {doctor.user.name.split(" ").pop()}
                   </h2>
 
                   {!session && (
@@ -349,7 +349,7 @@ export default function DoctorDetailPage() {
                       }}
                     >
                       <div style={{ fontWeight: 600, color: "var(--text)" }}>
-                        ✅ {DAY_FULL[selectedSchedule.dayOfWeek]} {selectedSchedule.startTime}–{selectedSchedule.endTime}
+                        {DAY_FULL[selectedSchedule.dayOfWeek]} {selectedSchedule.startTime}–{selectedSchedule.endTime}
                       </div>
                       <div style={{ color: "var(--text-muted)", fontSize: "0.78rem", marginTop: "0.25rem" }}>
                         {selectedDate && new Date(selectedDate).toLocaleDateString(
@@ -362,7 +362,7 @@ export default function DoctorDetailPage() {
 
                   {!selectedSchedule && (
                     <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginBottom: "1rem" }}>
-                      👆 {dd.selectTime}
+                      {dd.selectTime}
                     </p>
                   )}
 
@@ -441,7 +441,7 @@ export default function DoctorDetailPage() {
                       border: "1px solid rgba(16,185,129,0.15)",
                     }}
                   >
-                    💡 {dd.fee}:{" "}
+                    {dd.fee}:{" "}
                     <strong style={{ color: "var(--accent)" }}>
                       {doctor.fee.toLocaleString(locale === "vi" ? "vi-VN" : "en-US")}
                       {locale === "vi" ? "đ" : " VND"}

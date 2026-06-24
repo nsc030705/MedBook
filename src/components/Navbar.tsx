@@ -19,7 +19,7 @@ export function Navbar() {
     { href: "/dashboard", label: t.nav.appointments },
     { href: "/chat", label: t.nav.aiChat },
     ...(role === "DOCTOR" ? [{ href: "/doctor-profile", label: locale === "vi" ? "Hồ sơ BS" : "My Profile" }] : []),
-    ...(role === "ADMIN" ? [{ href: "/admin", label: "🛡️ Admin" }] : []),
+    ...(role === "ADMIN" ? [{ href: "/admin", label: "Admin" }] : []),
   ];
 
   return (
@@ -71,7 +71,7 @@ export function Navbar() {
               fontSize: "1rem",
             }}
           >
-            🏥
+            MB
           </span>
           <span className="gradient-text">MedBook</span>
         </Link>
@@ -148,7 +148,7 @@ export function Navbar() {
                 "var(--text-muted)";
             }}
           >
-            🌐
+            VI
             <span
               style={{
                 color: locale === "vi" ? "var(--primary)" : "var(--text-muted)",
@@ -200,7 +200,7 @@ export function Navbar() {
                       }}
                     />
                   ) : (
-                    "👤"
+                    session.user?.name?.[0]?.toUpperCase() || "U"
                   )}
                 </span>
                 <span className="hidden-mobile">{session.user?.name?.split(" ").pop()}</span>
